@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "ozo_app",
+    "slug": "ozo_app",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./src/assets/AppIcons/playstore.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
+    "newArchEnabled": true,
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./src/assets/images/logo.png",
+        "backgroundColor": "#1A1F2C"
+      },
+      "softwareKeyboardLayoutMode": "adjustResize"
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "image": "./src/assets/images/logo.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#1A1F2C"
+        }
+      ]
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
+  }
+}

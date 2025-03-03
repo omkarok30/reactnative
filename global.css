@@ -1,0 +1,70 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    :root {
+        --background: 0 0% 100%;
+        /* Blanc pur pour le fond */
+        --foreground: 240 10% 3.9%;
+        /* Texte presque noir pour meilleure lisibilité */
+        --card: 0 0% 100%;
+        /* Cartes en blanc */
+        --card-foreground: 240 10% 3.9%;
+        --popover: 0 0% 100%;
+        --popover-foreground: 240 10% 3.9%;
+        --primary: 38 45% 54%;
+        /* Or #c69f4a */
+        --primary-foreground: 0 0% 0%;
+        --secondary: 240 4.8% 95.9%;
+        /* Gris très clair pour les éléments secondaires */
+        --secondary-foreground: 240 5.9% 10%;
+        --muted: 240 4.8% 95.9%;
+        /* Gris clair pour les éléments atténués */
+        --muted-foreground: 240 3.8% 46.1%;
+        --accent: 38 45% 96%;
+        /* Or très clair pour les accents */
+        --accent-foreground: 240 5.9% 10%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 98%;
+        --border: 240 5.9% 90%;
+        /* Bordures légères */
+        --input: 240 5.9% 90%;
+        --ring: 38 45% 54%;
+        /* Or pour les focus */
+        --radius: 1rem;
+    }
+
+    .dark {
+        --background: 222 23% 11%;
+        /* #1A1F2C */
+        --foreground: 0 0% 100%;
+        /* Blanc */
+        --card: 222 23% 11%;
+        /* #1A1F2C */
+        --card-foreground: 0 0% 100%;
+        --popover: 222 23% 11%;
+        /* #1A1F2C */
+        --popover-foreground: 0 0% 100%;
+        --primary: 38 45% 54%;
+        /* Or #c69f4a */
+        --primary-foreground: 0 0% 0%;
+        --secondary: 0 0% 100%;
+        /* Blanc */
+        --secondary-foreground: 0 0% 0%;
+        --muted: 223 24% 15%;
+        /* #1E2330 */
+        --muted-foreground: 0 0% 65%;
+        --accent: 223 24% 15%;
+        /* #1E2330 */
+        --accent-foreground: 38 45% 54%;
+        --destructive: 0 84% 60%;
+        --destructive-foreground: 0 0% 100%;
+        --border: 223 24% 25%;
+        /* #252A3C */
+        --input: 223 24% 15%;
+        /* #1E2330 */
+        --ring: 38 45% 54%;
+        /* Or */
+    }
+}
