@@ -45,7 +45,7 @@ const LoginScreen: FC = () => {
                 <View className="flex-col flex-1 items-center mt-5">
                     <Image
                         source={require("@assets/images/playstorewhite.png")}
-                        className='w-32 h-24 filter brightness-0 invert'
+                        className='w-20 h-16 filter brightness-0 invert'
                     />
                     {/* <Text className="text-white text-center text-2xl font-bold">Sign in to your Account</Text> */}
                     <LoginForm />

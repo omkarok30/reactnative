@@ -56,7 +56,7 @@ export function SubcategorySelector({
     }, [categoryId, type]);
 
     if (!categoryId) return null;
-
+    
     return (
         <Select
             value={

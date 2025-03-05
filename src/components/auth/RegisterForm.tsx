@@ -4,80 +4,75 @@ import { Input } from '@/components/ui/input';
 import { Text } from '@/components/ui/text';
 import { Button } from '@/components/ui/button';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { registerSchema } from './authSchema';
+import { Controller, useForm } from 'react-hook-form';
+import { useAuth } from '@/hooks/api/useAuth';
 
 const RegisterForm = () => {
+    const { control, handleSubmit, onSubmit, isLoading, errors } = useAuth(true);
     const [secureText, setSecureText] = useState(true);
     const [secureConfirmText, setSecureConfirmText] = useState(true);
-    const [loading, setLoading] = useState(false);
-    const [touched, setTouched] = useState({
-        firstName: false,
-        lastName: false,
-        email: false,
-        password: false,
-        confirmPassword: false,
-    });
 
-    // const {
-    //     control,
-    //     handleSubmit,
-    //     formState: { errors },
-    // } = useForm({
-    //     resolver: zodResolver(registerSchema),
-    //     defaultValues: {
-    //         firstName: '',
-    //         lastName: '',
-    //         email: '',
-    //         password: '',
-    //         confirmPassword: '',
-    //     },
-    // });
-
-    // const onSubmit = (data: { firstName: string; lastName: string; email: string; password: string }) => {
-    //     setLoading(true);
-    //     console.log('Register Data:', data);
-    //     setTimeout(() => setLoading(false), 2000); // Simulate API call
-    // };
-
+    const handleRegister = (data: { firstName: string; lastName: string; email: string; password: string, confirmPassword: string }) => {
+        onSubmit(data);
+    };
+    console.log(errors)
     return (
-        <View className="bg-white w-full px-5 py-6 rounded-xl mt-6 shadow-md">
+        <View className="bg-white w-full px-5 py-6 rounded-xl shadow-md">
             {/* First & Last Name Inputs */}
             <View className="flex-row gap-x-4 mb-4">
                 <View className="flex-1">
-                    <Input
-                        placeholder="First Name"
-                        // value={field.value}
-                        // onChangeText={field.onChange}
-                        onBlur={() => setTouched((prev) => ({ ...prev, firstName: false }))}
-                        onFocus={() => setTouched((prev) => ({ ...prev, firstName: true }))}
-                        size="lg"
-                        className={`border-2 placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium`}
+                    <Controller
+                        control={control}
+                        name="firstName"
+                        render={({ field }) => (
+                            <Input
+                                placeholder="First Name"
+                                value={field.value}
+                                onChangeText={field.onChange}
+                                size="lg"
+                                className={`border-2 placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium ${errors.firstName ? "border-red-500" : "border-gray-300"}`}
+                            />
+                        )}
                     />
+                    {errors.firstName && <Text className="text-xs text-red-500 font-semibold">{errors.firstName.message}</Text>}
                 </View>
 
                 <View className="flex-1">
-                    <Input
-                        placeholder="Last Name"
-                        // value={field.value}
-                        // onChangeText={field.onChange}
-                        onBlur={() => setTouched((prev) => ({ ...prev, lastName: false }))}
-                        onFocus={() => setTouched((prev) => ({ ...prev, lastName: true }))}
-                        size="lg"
-                        className={`border-2 placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium`}
+                    <Controller
+                        control={control}
+                        name="lastName"
+                        render={({ field }) => (
+                            <Input
+                                placeholder="Last Name"
+                                value={field.value}
+                                onChangeText={field.onChange}
+                                size="lg"
+                                className={`border-2 placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium ${errors.lastName ? "border-red-500" : "border-gray-300"}`}
+                            />
+                        )}
                     />
+                    {errors.lastName && <Text className="text-xs text-red-500 font-semibold">{errors.lastName.message}</Text>}
                 </View>
             </View>
 
             <View className="mb-3">
                 {/* Email Input */}
-                <Input
-                    placeholder="Email"
-                    // value={field.value}
-                    // onChangeText={field.onChange}
-                    onBlur={() => setTouched((prev) => ({ ...prev, email: false }))}
-                    onFocus={() => setTouched((prev) => ({ ...prev, email: true }))}
-                    size="lg"
-                    className={`border-2 placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium`}
+                <Controller
+                    control={control}
+                    name="email"
+                    render={({ field }) => (
+                        <Input
+                            placeholder="Email"
+                            value={field.value}
+                            onChangeText={field.onChange}
+                            size="lg"
+                            className={`border-2 placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium ${errors.email ? "border-red-500" : "border-gray-300"}`}
+                        />
+                    )}
                 />
+                {errors.email && <Text className="text-xs text-red-500 font-semibold">{errors.email.message}</Text>}
             </View>
 
             {/* Password Input */}
@@ -86,41 +81,52 @@ const RegisterForm = () => {
                     <Pressable className="absolute right-4 top-1/2 -translate-y-1/2 z-10" onPress={() => setSecureText(!secureText)}>
                         <Ionicons name={secureText ? 'eye-outline' : 'eye-off-outline'} size={18} />
                     </Pressable>
-                    <Input
-                        placeholder="Password"
-                        // value={field.value}
-                        // onChangeText={field.onChange}
-                        onBlur={() => setTouched((prev) => ({ ...prev, password: false }))}
-                        onFocus={() => setTouched((prev) => ({ ...prev, password: true }))}
-                        size="lg"
-                        secureTextEntry={secureText}
-                        className={`border-2 placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium`}
+                    <Controller
+                        control={control}
+                        name="password"
+                        render={({ field }) => (
+                            <Input
+                                placeholder="Password"
+                                value={field.value}
+                                onChangeText={field.onChange}
+                                size="lg"
+                                secureTextEntry={secureText}
+                                className={`border-2 placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium ${errors.password ? "border-red-500" : "border-gray-300"}`}
+                            />
+                        )}
                     />
+                    {errors.password && <Text className="text-xs text-red-500 font-semibold">{errors.password.message}</Text>}
                 </View>
             </View>
 
             {/* Confirm Password Input */}
-            {/* <View className="mb-3">
+            <View className="mb-3">
                 <View className="relative">
                     <Pressable className="absolute right-4 top-1/2 -translate-y-1/2 z-10" onPress={() => setSecureConfirmText(!secureConfirmText)}>
                         <Ionicons name={secureConfirmText ? 'eye-outline' : 'eye-off-outline'} size={18} />
                     </Pressable>
-                    <Input
-                        placeholder="Confirm Password"
-                        // value={field.value}
-                        // onChangeText={field.onChange}
-                        onBlur={() => setTouched((prev) => ({ ...prev, confirmPassword: false }))}
-                        onFocus={() => setTouched((prev) => ({ ...prev, confirmPassword: true }))}
-                        size="lg"
-                        secureTextEntry={secureConfirmText}
-                        className={`border-2 placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium`}
+
+                    <Controller
+                        control={control}
+                        name="confirmPassword"
+                        render={({ field }) => (
+                            <Input
+                                placeholder="Confirm Password"
+                                value={field.value}
+                                onChangeText={field.onChange}
+                                size="lg"
+                                secureTextEntry={secureConfirmText}
+                                className={`border-2 placeholder:text-gray-400 placeholder:text-sm placeholder:font-medium ${errors.confirmPassword ? "border-red-500" : "border-gray-300"}`}
+                            />
+                        )}
                     />
+                    {errors.confirmPassword && <Text className="text-xs text-red-500 font-semibold">{errors.confirmPassword.message}</Text>}
                 </View>
-            </View> */}
+            </View>
 
             {/* Sign Up Button */}
-            <Button onPress={() => { }} variant="default" className="text-white mt-5 flex-row items-center justify-center" disabled={loading}>
-                {loading && <ActivityIndicator color="#fff" size="small" className="mr-2" />}
+            <Button onPress={handleSubmit(handleRegister)} variant="default" className="text-white mt-5 flex-row items-center justify-center" disabled={isLoading}>
+                {isLoading && <ActivityIndicator color="#fff" size="small" className="mr-2" />}
                 <Text className="text-white text-base">Sign Up</Text>
             </Button>
 

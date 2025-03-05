@@ -1,9 +1,7 @@
-import { View, Text, FlatList, Animated, TouchableOpacity } from 'react-native'
+import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import CustomSafeAreaView from '@/components/global/CustomSafeView'
 import { PageHeader } from '@/components/layout/PageHeader'
-import { ChooseTypeView } from '@/components/publication/ChooseTypeView'
-import { DefaultView } from '@/components/publication/DefaultView'
 import { servicesData } from '@/utils/dummyData'
 import ServiceCard from '@/components/servicesCards/ServiceCard'
 import { H4 } from '@/components/ui/typography'
@@ -11,7 +9,6 @@ import { Button } from '@/components/ui/button'
 import Ionicons from '@expo/vector-icons/Ionicons'
 import { Colors } from '@/utils/Constants'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
-import { screenWidth } from '@/utils/Scaling'
 import { navigate } from '@/utils/NavigationUtils'
 import { useAuthStore } from '@/store/useAuthStore'
 
@@ -24,31 +21,36 @@ const PublishScreen = () => {
             <View className="flex-1">
                 <View className="px-4 py-6 shadow-md">
                     {view === "default" ? (
-                        <Button variant="outline" className="flex-row gap-1 items-center" onPress={() => setView("choose")}>
-                            <Ionicons name="add-circle-outline" size={21} color={Colors.primary} />
-                            <Text className="text-foreground font-semibold text-md">Nouvelle annonce</Text>
-                        </Button>
+                        <View className='flex-row items-center flex-wrap gap-x-4'>
+                            <Button variant="outline" className="flex-row flex-1 gap-1 items-center" onPress={() => navigate("MyPublication")}>
+                                <Ionicons name="list" size={21} color={Colors.primary} />
+                                <Text className="text-foreground font-semibold text-sm">Mes annonces</Text>
+                            </Button>
+                            <Button variant="outline" className="flex-row flex-1 gap-1 items-center" onPress={() => setView("choose")}>
+                                <Ionicons name="add-circle-outline" size={21} color={Colors.primary} />
+                                <Text className="text-foreground font-semibold text-sm">Nouvelle annonce</Text>
+                            </Button>
+                        </View>
                     ) : (
                         <View className="flex flex-col gap-4">
                             {/* Back Button */}
                             <Button onPress={() => setView("default")} variant="outline" size='icon' className="flex-row gap-1 items-center w-32">
                                 <MaterialCommunityIcons name="arrow-left-thin" size={24} color={Colors.primary} />
-                                <Text className="text-foreground font-semibold text-md">Retour</Text>
+                                <Text className="text-foreground font-semibold text-sm">Retour</Text>
                             </Button>
 
                             {/* Two Options in Row */}
                             <View className="flex-row gap-4">
                                 {/* Proposer un service */}
-                                <TouchableOpacity className="flex-1 bg-white px-1 py-5 rounded-lg shadow-md items-center border-2 border-primary" onPress={() => navigate("Addservice", { id: user?.id ?? undefined })}>
+                                <TouchableOpacity className="flex-1 bg-white px-1 py-2 rounded-lg shadow-md items-center border-2 border-primary" onPress={() => navigate("Addservice", { id: user?.id ?? undefined })}>
                                     <MaterialCommunityIcons name="hammer-wrench" size={24} color={Colors.primary} />
                                     <Text className="text-foreground font-semibold text-sm mt-2">Proposer un service</Text>
                                 </TouchableOpacity>
 
                                 {/* Publier une vente */}
-                                <TouchableOpacity className="flex-1 bg-white px-1 py-5 rounded-lg shadow-md items-center border-2 border-primary" onPress={() => navigate("Addservice", { id: user?.id ?? undefined })}>
+                                <TouchableOpacity className="flex-1 bg-white px-1 py-2 rounded-lg shadow-md items-center border-2 border-primary" onPress={() => navigate("Addservice", { id: user?.id ?? undefined })}>
                                     <MaterialCommunityIcons name="shopping" size={24} color={Colors.primary} />
                                     <Text className="text-foreground font-semibold text-sm mt-2">Publier une vente</Text>
-
                                 </TouchableOpacity>
                             </View>
                         </View>
@@ -80,7 +82,7 @@ const PublishScreen = () => {
                         <View className="my-5 px-4">
                             <View className="flex flex-row items-center justify-between">
                                 <H4 className="text-black-300 font-bold">
-                                    Mes annonces
+                                    Toutes les annonces
                                 </H4>
                             </View>
                         </View>

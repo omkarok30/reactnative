@@ -21,7 +21,7 @@ export const useAuthStore = create<AuthState>()(
             logout: async () => {
                 await supabase.auth.signOut();
                 set({ user: null });
-                navigate("loginScreen")
+                navigate("Reserve")
             },
 
             // checkUser: async () => {

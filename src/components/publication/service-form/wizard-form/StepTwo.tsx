@@ -1,4 +1,4 @@
-import { View, Text, KeyboardAvoidingView } from 'react-native'
+import { View, Text, KeyboardAvoidingView, Platform, Pressable } from 'react-native'
 import React from 'react'
 import { Control, Controller, UseFormSetValue } from 'react-hook-form';
 import { ServiceFormData } from '@/types/services';
@@ -11,6 +11,7 @@ import { LocationAutocomplete } from '@/components/LocationAutocomplete';
 import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 import { Keyboard } from 'react-native';
 import { ScrollView } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 type PropsType = {
   control: Control<ServiceFormData>;
@@ -28,6 +29,14 @@ const languages = [
 ];
 
 const StepTwo = ({ control, setValue }: PropsType) => {
+  const triggerRef = React.useRef<React.ElementRef<typeof SelectTrigger>>(null);
+  const insets = useSafeAreaInsets();
+  const contentInsets = {
+    top: insets.top,
+    bottom: Platform.select({ ios: insets.bottom, android: insets.bottom + 50 }),
+    left: 12,
+    right: 12,
+  };
   return (
     <View className="space-y-6">
       <View className="text-center mb-6">
@@ -38,16 +47,16 @@ const StepTwo = ({ control, setValue }: PropsType) => {
       </View>
 
       <View className='mb-3'>
-        <Label htmlFor="photos">Photos (maximum 3)</Label>
+        <Label nativeID="photos">Photos (maximum 3)</Label>
         <Controller
           control={control}
           name="photos"
+          aria-labelledby="photos"
           render={({ field }) => (
             <PhotoUpload
               {...field}
               onPhotosChange={(photos) => {
-                console.log(photos)
-                // setValue("photos", photos);
+                setValue("photos", photos);
               }}
             />
           )}
@@ -55,10 +64,11 @@ const StepTwo = ({ control, setValue }: PropsType) => {
       </View>
 
       <View className='mb-3'>
-        <Label htmlFor="service_area">Zone d'intervention</Label>
+        <Label nativeID="service_area">Zone d'intervention</Label>
         <Controller
           control={control}
           name="service_area"
+          aria-labelledby="service_area"
           render={({ field }) => (
             <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
               <View style={{ flex: 1 }}>
@@ -76,7 +86,7 @@ const StepTwo = ({ control, setValue }: PropsType) => {
       </View>
 
       <View className='mb-3'>
-        <Label htmlFor="spoken_languages">Langues parlées</Label>
+        <Label nativeID="spoken_languages">Langues parlées</Label>
         <Controller
           control={control}
           name="spoken_languages"
@@ -84,28 +94,40 @@ const StepTwo = ({ control, setValue }: PropsType) => {
             <Controller
               control={control}
               name="spoken_languages"
-              render={({ field }) => (
-                <Select
-                  value={field.value?.[0] || ""}
-                  onValueChange={(value) => field.onChange([value])} // Ensure it's a string
-                >
-                  <SelectTrigger className="w-full bg-background">
-                    <SelectValue placeholder="Sélectionnez une langue" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-background border border-border">
-                    {languages.map((language) => (
-                      <SelectItem
-                        key={language.code}
-                        value={language.code} // Ensure this is a string
-                        label={language.name} // Ensure this is a string
-                        className="py-3 hover:bg-accent/50 cursor-pointer text-foreground"
-                      >
-                        {language.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              )}
+              render={({ field }) => {
+                return (
+                  <View className='justify-between items-center'>
+                    <Pressable
+                      className='absolute top-0 right-0 w-16 h-16 active:bg-primary/5'
+                      onPress={() => {
+                        // open programmatically
+                        triggerRef.current?.open();
+                      }}
+                    />
+                    <Select
+                      value={field?.value?.[0] || ""}
+                      onValueChange={(value) => field.onChange([value])} // Ensure it's a string
+                      aria-labelledby="service_area"
+                    >
+                      <SelectTrigger ref={triggerRef} className="w-full bg-background">
+                        <SelectValue placeholder="Sélectionnez une langue" />
+                      </SelectTrigger>
+                      <SelectContent insets={contentInsets} className="bg-background border border-border w-[250px]">
+                        {languages.map((language) => (
+                          <SelectItem
+                            key={language.code}
+                            value={language.code} // Ensure this is a string
+                            label={language.name} // Ensure this is a string
+                            className="py-3 hover:bg-accent/50 cursor-pointer text-foreground"
+                          >
+                            {language.name}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </View>
+                )
+              }}
             />
 
           )}

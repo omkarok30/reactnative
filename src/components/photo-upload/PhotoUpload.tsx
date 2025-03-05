@@ -51,7 +51,6 @@ export function PhotoUpload({ onPhotosChange }: PhotoUploadProps) {
         return;
       }
  
-      console.log(user)
       if (!user) {
         showToast("error", "Erreur", "Vous devez être connecté pour uploader des photos");
         return;
@@ -68,7 +67,7 @@ export function PhotoUpload({ onPhotosChange }: PhotoUploadProps) {
           const publicUrl = await uploadFile(fileObj);
           if (publicUrl) uploadedPhotos.push(publicUrl);
         } catch (error: any) {
-          console.log(error);
+          console.log(error.message);
           showToast("error", "Erreur", `Erreur lors de l'upload: ${error.message}`);
         }
       }

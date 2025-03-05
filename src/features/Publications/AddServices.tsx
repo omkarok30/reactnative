@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, ScrollView } from "react-native";
+import { View, Text, ScrollView, FlatList } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { FormProvider, useForm } from "react-hook-form";
 import { goBack, navigate } from "@/utils/NavigationUtils";
@@ -18,6 +18,9 @@ import { serviceFormSchema, ServiceFormSchema } from "@/models/ServiceFormSchema
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useServiceFormStore } from "@/store/useServiceFormStore";
 import StepTwo from "@/components/publication/service-form/wizard-form/StepTwo";
+import StepThree from "@/components/publication/service-form/wizard-form/StepThree";
+import StepFour from "@/components/publication/service-form/wizard-form/StepFour";
+import StepFive from "@/components/publication/service-form/wizard-form/StepFive";
 
 
 export default function AddService() {
@@ -32,10 +35,10 @@ export default function AddService() {
         defaultValues: formData,
     });
 
-    const { control, setValue, handleSubmit, watch, reset, formState: { errors } } = methods;
+    const { control, setValue, handleSubmit, watch, reset, getValues, formState: { errors } } = methods;
     const [currentStep, setCurrentStep] = useState(1);
     const totalSteps = 5;
-
+    console.log(errors)
     // Fetch service data using the custom hook
     const { isLoading, error } = useFetchService(serviceId || null, reset);
 
@@ -79,42 +82,50 @@ export default function AddService() {
     return (
         <CustomSafeAreaView>
             <PageHeader title={serviceId ? "Modifier l'annonce" : "Ajouter un service"} backUrl />
-            <ScrollView className="flex-1">
-                <View className="flex-1 px-4 py-6">
-                    <StepHeader currentStep={currentStep} totalSteps={totalSteps} />
-                    <View className="p-6 mb-20 bg-white dark:bg-gray-800 shadow-lg rounded-2xl">
-                        <FormProvider {...methods}>
-                            <View className="animate-fade-in">
-                                {currentStep === 1 && <StepOne control={control} setValue={setValue} />}
-                                {currentStep === 2 && <StepTwo control={control} setValue={setValue} />}
+            <FlatList
+                ListHeaderComponent={
+                    <>
+                        <View className="flex-1 px-4 py-6">
+                            <StepHeader currentStep={currentStep} totalSteps={totalSteps} />
+                            <View className="p-6 mb-20 bg-white dark:bg-gray-800 shadow-lg rounded-2xl">
+                                <FormProvider {...methods}>
+                                    <View className="animate-fade-in">
+                                        {currentStep === 1 && <StepOne control={control} setValue={setValue} />}
+                                        {currentStep === 2 && <StepTwo control={control} setValue={setValue} />}
+                                        {currentStep === 3 && <StepThree control={control} setValue={setValue} watch={watch} />}
+                                        {currentStep === 4 && <StepFour getValues={getValues} />}
+                                        {currentStep === 5 && <StepFive getValues={getValues} reset={reset} />}
+                                    </View>
+                                    <View className="flex-row justify-between mt-6 pt-6 border-t border-gray-300 dark:border-gray-600">
+                                        {currentStep > 1 ? (
+                                            <Button variant='outline' onPress={() => setCurrentStep(Math.max(currentStep - 1, 1))}>
+                                                <Text className="text-gray-700 dark:text-gray-300 font-medium">Précédent</Text>
+                                            </Button>
+                                        ) : (
+                                            <Button onPress={() => { goBack(); resetForm(); }} variant='outline'>
+                                                <Text className="text-gray-700 dark:text-gray-300 font-medium">Retour</Text>
+                                            </Button>
+                                        )}
+                                        {currentStep < 5 && (
+                                            <Button
+                                                onPress={() => isStepValid() && setCurrentStep(Math.min(currentStep + 1, totalSteps))}
+                                                className={`ml-auto px-4 py-2 rounded-lg`}
+                                                disabled={!isStepValid()}
+                                            >
+                                                <Text className='text-white font-medium'>Suivant</Text>
+                                            </Button>
+                                        )}
+                                    </View>
+                                </FormProvider>
                             </View>
-                            <View className="flex-row justify-between mt-6 pt-6 border-t border-gray-300 dark:border-gray-600">
-                                {currentStep > 1 ? (
-                                    <Button variant='outline' onPress={() => setCurrentStep(Math.max(currentStep - 1, 1))}>
-                                        <Text className="text-gray-700 dark:text-gray-300 font-medium">Précédent</Text>
-                                    </Button>
-                                ) : (
-                                    <Button onPress={() => {
-                                        goBack();
-                                        resetForm();
-                                    }} variant='outline'>
-                                        <Text className="text-gray-700 dark:text-gray-300 font-medium">Retour</Text>
-                                    </Button>
-                                )}
-                                {currentStep < 5 && (
-                                    <Button
-                                        onPress={() => isStepValid() && setCurrentStep(Math.min(currentStep + 1, totalSteps))}
-                                        className={`ml-auto px-4 py-2 rounded-lg`}
-                                        disabled={!isStepValid()}
-                                    >
-                                        <Text className='text-white font-medium'>Suivant</Text>
-                                    </Button>
-                                )}
-                            </View>
-                        </FormProvider>
-                    </View>
-                </View>
-            </ScrollView>
+                        </View>
+                    </>
+                }
+                data={[]} // Empty array since content is in ListHeaderComponent
+                renderItem={null} // No need to render anything else
+                keyboardShouldPersistTaps="handled"
+            />
+
         </CustomSafeAreaView>
     );
 }

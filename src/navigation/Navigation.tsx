@@ -16,6 +16,7 @@ import { navigationRef } from "@/utils/NavigationUtils";
 import { Colors } from "@/utils/Constants";
 import AuthLayout from "@/features/auth/AuthLayout";
 import AddServices from "@/features/Publications/AddServices";
+import MyPublications from "@/features/Publications/MyPublications";
 
 const Stack = createNativeStackNavigator();
 
@@ -27,7 +28,7 @@ const AuthStack = () => (
 );
 
 const Navigation: FC = () => {
-    const { logout,  user, session } = useAuthStore();
+    const { logout, user, session } = useAuthStore();
     // useEffect(() => { checkUser() }, []);
     return (
         <NavigationContainer ref={navigationRef}>
@@ -49,13 +50,14 @@ const Navigation: FC = () => {
                 <Stack.Screen name="Privacy" component={Privacy} />
                 <Stack.Screen name="Payments" component={PaymentMethods} />
                 <Stack.Screen name="Addservice" component={AddServices} />
+                <Stack.Screen name="MyPublication" component={MyPublications} />
 
                 {/* Auth Screens as Modal */}
                 <Stack.Screen
                     name="LoginScreen"
                     component={AuthLayout}
                     options={{
-                        presentation: "modal", 
+                        presentation: "modal",
                         headerShown: true,
                         headerTitle: 'Welcome',
                         headerStyle: {

@@ -4,8 +4,8 @@ import { useMutation } from "@tanstack/react-query";
 import { loginSchema, registerSchema } from "@/components/auth/authSchema";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthStore } from "@/store/useAuthStore";
-import { goBack, navigate } from "@/utils/NavigationUtils";
-import { CommonActions, useNavigation } from "@react-navigation/native";
+import { navigate } from "@/utils/NavigationUtils";
+import { useNavigation } from "@react-navigation/native";
 
 // Define types
 type LoginData = { email: string; password: string };
@@ -43,7 +43,7 @@ export const useAuth = (isRegister: boolean) => {
             const setAuth = useAuthStore.getState().setAuth;
             // console.log(data)
             setAuth(data.user, data.session);
-            goBack()
+            navigate('Reserve')
         },
         onError: (error) => {
             if (error instanceof Error) setError("email", { message: error.message });
@@ -62,6 +62,9 @@ export const useAuth = (isRegister: boolean) => {
 
             if (error) throw new Error(error.message);
             return response;
+        },
+        onSuccess(data, variables, context) {
+            navigate('Reserve')
         },
         onError: (error) => {
             if (error instanceof Error) setError("email", { message: error.message });
@@ -85,4 +88,3 @@ export const useAuth = (isRegister: boolean) => {
         onSubmit, // ✅ Fixed: Now passing a proper function
     };
 };
-

@@ -29,12 +29,14 @@ const toastConfig = {
         backgroundColor: "#D1FAE5", // Light green background
       }}
       text1Style={{
-        fontSize: 16,
+        flexWrap: "wrap",
+        fontSize: 14,
         fontWeight: "bold",
         color: "green",
       }}
       text2Style={{
-        fontSize: 14,
+        flexWrap: "wrap",
+        fontSize: 12,
         color: "#065F46", // Darker green
       }}
     />
@@ -47,12 +49,14 @@ const toastConfig = {
         backgroundColor: "#FEE2E2", // Light red background
       }}
       text1Style={{
-        fontSize: 16,
+        flexWrap: "wrap",
+        fontSize: 14,
         fontWeight: "bold",
         color: "red",
       }}
       text2Style={{
-        fontSize: 14,
+        flexWrap: "wrap",
+        fontSize: 12,
         color: "#7F1D1D", // Darker red
       }}
     />

@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { createJSONStorage, persist } from "zustand/middleware";
+import { shallow } from "zustand/shallow";
 
 type Category = {
     id: number;
@@ -80,3 +81,16 @@ export const useCategoryStore = create<CategoryStore>()(
         }
     )
 );
+
+export const useSelectedCategory = (selectedCategoryId: number) => {
+    return useCategoryStore(
+        (state) => state.categories.find((c) => c.id === selectedCategoryId) || null
+    );
+};
+export const useSelectedSubCategory = (subCategoryId: number) => {
+    return useCategoryStore(
+        (state) => {
+            return state.subcategories.find((c) => c.id === subCategoryId) || null
+        }
+    );
+};

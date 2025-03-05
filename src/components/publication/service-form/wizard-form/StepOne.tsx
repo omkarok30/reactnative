@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { CategorySelector } from "@/components/form-selectors/CategorySelector";
 import { SubcategorySelector } from "@/components/form-selectors/SubcategorySelector";
 import { PredefinedServicesSelector } from "@/components/form-selectors/PredefinedServicesSelector";
-import { H3, H4 } from "@/components/ui/typography";
+import { H3, H4, P } from "@/components/ui/typography";
 import { supabase } from "@/integrations/supabase/client";
 import { Category, Subcategory } from "@/types/database";
 import Toast from "react-native-toast-message";
@@ -56,16 +56,17 @@ export default function StepOne({ control, setValue }: PropsType) {
   return (
     <View className="space-y-2">
       <H3 className="font-semibold text-center">Détails du service</H3>
-      <H4 className="text-muted-foreground text-sm text-center">
+      <P className="text-muted-foreground text-sm text-center">
         Commencez par choisir une catégorie et vos services proposés
-      </H4>
+      </P>
 
       {/* Category Selector */}
       <View className="mb-3 mt-6">
-        <Label htmlFor="category">Catégorie</Label>
+        <Label nativeID="category">Catégorie</Label>
         <Controller
           control={control}
           name="category"
+          aria-labelledby="category"
           render={({ field }) => (
             <CategorySelector
               selectedCategory={selectedCategory}
@@ -85,13 +86,14 @@ export default function StepOne({ control, setValue }: PropsType) {
       {/* Subcategory Selector */}
       {selectedCategory && (
         <View className="mb-3">
-          <Label htmlFor="subcategory">Sous-catégorie</Label>
+          <Label nativeID="subcategory">Sous-catégorie</Label>
           <Controller
             control={control}
             name="subcategory"
+            aria-labelledby="subcategory"
             render={({ field }) => (
               <SubcategorySelector
-                categoryId={selectedCategory.id}
+                categoryId={selectedCategory.id || Number(selectedCategory)}
                 selectedSubcategory={selectedSubcategory}
                 onSubcategoryChange={(subcategory) => {
                   setSelectedSubcategory(subcategory);
@@ -109,10 +111,11 @@ export default function StepOne({ control, setValue }: PropsType) {
       {/* Predefined Services Selector */}
       {selectedSubcategory && (
         <View className="mb-3">
-          <Label htmlFor="services">Services proposés</Label>
+          <Label nativeID="services">Services proposés</Label>
           <Controller
             control={control}
             name="services"
+            aria-labelledby="services"
             render={({ field }) => (
               <PredefinedServicesSelector
                 selectedSubcategory={selectedSubcategory}
@@ -131,13 +134,14 @@ export default function StepOne({ control, setValue }: PropsType) {
       {/* Description Textarea */}
       <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
         <View className="mb-3">
-          <Label htmlFor="description">Description détaillée</Label>
+          <Label nativeID="description">Description détaillée</Label>
           <Controller
             control={control}
             name="description"
             render={({ field }) => (
               <Textarea
                 id="description"
+                aria-labelledby="description"
                 value={field.value}
                 onChangeText={(text) => setValue("description", text)}
                 placeholder="Décrivez votre service en détail"

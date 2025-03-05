@@ -29,10 +29,10 @@ const RegisterScreen: FC = () => {
                 </ImageBackground>
 
                 {/* Login Card */}
-                <View className="flex-col flex-1 items-center mt-5">
+                <View className="flex-col flex-1 items-center">
                     <Image
                         source={require("@assets/images/playstorewhite.png")}
-                        className='w-32 h-24 filter brightness-0 invert'
+                        className='w-20 h-16 filter brightness-0 invert'
                     />
 
                     {/* <Text className="text-white text-center text-2xl font-bold">Sign Up</Text>

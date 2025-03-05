@@ -79,7 +79,7 @@ const AccountScreen = () => {
               <Text className="text-lg text-white">Login</Text>
             </Button>
               :
-              <Button variant='destructive' size='lg' className="flex-row gap-1 items-center" onPress={() => { }}>
+              <Button variant='destructive' className="flex-row gap-1 items-center" onPress={() => logout()}>
                 <Ionicons name="log-out-outline" size={24} style={{ color: 'white' }} />
                 <Text>Logout</Text>
               </Button>}
