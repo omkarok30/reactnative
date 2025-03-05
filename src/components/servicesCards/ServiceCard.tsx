@@ -19,7 +19,7 @@ interface ServiceCardProps {
     rating?: number;
     onChatPress?: () => void;
     onReservePress?: () => void;
-    onPress: () => void;
+    onPress?: () => void;
     style?: object,
     topServiceCard?: boolean;
 }

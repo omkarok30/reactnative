@@ -17,7 +17,7 @@ export default function Notifications() {
             <PageHeader backUrl title='Notification' />
 
             {/* Notification Settings */}
-            <View className="px-5 mt-5 dark:bg-gray-800/50 dark:backdrop-blur-xl dark:border-gray-700">
+            <View className="px-5 mt-5 dark:bg-gray-800/50 dark:border-gray-700">
                 <View className='bg-white p-4 rounded-xl shadow-lg flex-col gap-4'>
                     {/* Email Notifications */}
                     <View className="flex-row flex-wrap items-center justify-between border-b pb-4 border-gray-200">

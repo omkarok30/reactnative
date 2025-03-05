@@ -15,6 +15,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import { navigationRef } from "@/utils/NavigationUtils";
 import { Colors } from "@/utils/Constants";
 import AuthLayout from "@/features/auth/AuthLayout";
+import AddServices from "@/features/Publications/AddServices";
 
 const Stack = createNativeStackNavigator();
 
@@ -47,6 +48,7 @@ const Navigation: FC = () => {
                 <Stack.Screen name="Notifications" component={Notifications} />
                 <Stack.Screen name="Privacy" component={Privacy} />
                 <Stack.Screen name="Payments" component={PaymentMethods} />
+                <Stack.Screen name="Addservice" component={AddServices} />
 
                 {/* Auth Screens as Modal */}
                 <Stack.Screen

@@ -7,7 +7,7 @@ import CustomSafeAreaView from '../global/CustomSafeView';
 const Footer: React.FC = () => {
     return (
         <CustomSafeAreaView>
-            <View className="px-4 py-12 bg-gray-200 blur-2xl">
+            <View className="px-4 py-12 bg-gray-200">
                 <H3 className="mb-8 text-center dark:text-white border-b-0">
                     Pourquoi nous faire confiance
                 </H3>

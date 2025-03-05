@@ -73,7 +73,7 @@ const ProfileForm = ({ profile, onProfileChange, onLocationSelect, isLoading }: 
     };
 
     return (
-        <View className="p-6 bg-white dark:bg-gray-800/50 dark:backdrop-blur-xl rounded-lg shadow-sm dark:border dark:border-gray-700">
+        <View className="p-6 bg-white dark:bg-gray-800/50 rounded-lg shadow-sm dark:border dark:border-gray-700">
             <View className="flex-row">
                 {/* First Name */}
                 <View className="flex-1">

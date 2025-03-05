@@ -54,7 +54,7 @@ const SystemAppearance = () => {
                             }}
                         />
                         <Select>
-                            <SelectTrigger ref={triggerRef} className="w-[120px] bg-background/95 backdrop-blur-sm border-border text-left">
+                            <SelectTrigger ref={triggerRef} className="w-[120px] bg-background/95 border-border text-left">
                                 <SelectValue placeholder='select language' />
                             </SelectTrigger>
                             <SelectContent insets={contentInsets} className="bg-background border-border shadow-lg">

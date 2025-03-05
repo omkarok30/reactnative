@@ -3,7 +3,7 @@ import ActivityScreen from "@/features/ActivityScreen";
 import CategoryScreen from "@/features/CategoryScreen";
 import ReserveScreen from "@/features/dashboard/ReserveScreen";
 import MessageScreen from "@/features/MessageScreen";
-import PublishScreen from "@/features/PublishScreen";
+import PublishScreen from "@/features/Publications/PublishScreen";
 
 
 export const ICONS: Record<string, string> = {

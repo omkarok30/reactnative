@@ -440,3 +440,42 @@ export const conversations = [
 ]
 
 
+export const categories_services = [
+  {
+    "id": 1,
+    "name": "Services Domestiques",
+    "created_at": "2025-01-06T09:56:38.93952+00:00",
+    "type_id": 2
+  },
+  {
+    "id": 2,
+    "name": "Santé, Beauté et Bien-être",
+    "created_at": "2025-01-06T09:56:38.93952+00:00",
+    "type_id": 2
+  },
+  {
+    "id": 3,
+    "name": "Alimentation et Événementiel",
+    "created_at": "2025-01-06T09:56:38.93952+00:00",
+    "type_id": 2
+  },
+  {
+    "id": 4,
+    "name": "Artisanat et Services Techniques",
+    "created_at": "2025-01-06T09:56:38.93952+00:00",
+    "type_id": 2
+  },
+  {
+    "id": 5,
+    "name": "Éducation, Formation et Services Numériques",
+    "created_at": "2025-01-06T09:56:38.93952+00:00",
+    "type_id": 2
+  },
+  {
+    "id": 6,
+    "name": "Transport et Services Commerciaux",
+    "created_at": "2025-01-06T09:56:38.93952+00:00",
+    "type_id": 2
+  }
+]
+
