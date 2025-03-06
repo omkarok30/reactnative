@@ -4,7 +4,7 @@ import { useMutation } from "@tanstack/react-query";
 import { loginSchema, registerSchema } from "@/components/auth/authSchema";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuthStore } from "@/store/useAuthStore";
-import { navigate } from "@/utils/NavigationUtils";
+import { goBack, navigate } from "@/utils/NavigationUtils";
 import { useNavigation } from "@react-navigation/native";
 
 // Define types
@@ -43,7 +43,7 @@ export const useAuth = (isRegister: boolean) => {
             const setAuth = useAuthStore.getState().setAuth;
             // console.log(data)
             setAuth(data.user, data.session);
-            navigate('Reserve')
+            goBack()
         },
         onError: (error) => {
             if (error instanceof Error) setError("email", { message: error.message });

@@ -9,13 +9,17 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface ConversationsListProps {
     conversations: Conversation[];
+    refresh: () => void;
+    isLoading: boolean;
 }
-const ConversationsList = ({ conversations }: ConversationsListProps) => {
+const ConversationsList = ({ conversations, refresh, isLoading }: ConversationsListProps) => {
 
     return (
         <FlatList
             data={conversations}
             keyExtractor={(item) => item.id}
+            refreshing={isLoading}
+            onRefresh={() => refresh()}
             renderItem={({ item, index }) => {
                 const lastMessage = item.messages[0];
                 const participant = item.participants[0]; // Assuming 1-to-1 chat

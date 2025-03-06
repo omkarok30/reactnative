@@ -9,7 +9,7 @@ import Animated, { FadeInRight } from 'react-native-reanimated';
 const VentesCategory = () => {
     const scrollRef = useRef<ScrollView>(null);
     const itemRef = useRef<(React.ElementRef<typeof TouchableOpacity> | null)[]>([]);
-    const [activeIndex, setActiveIndex] = useState(0);
+    const [activeIndex, setActiveIndex] = useState(-1);
 
     const handleSelectedCategory = (index: number) => {
         const selected = itemRef.current[index];
@@ -51,11 +51,12 @@ const styles = StyleSheet.create({
         gap: 10,
         paddingHorizontal: 14,
         paddingVertical: 12,
+        marginTop:15,
     },
     item: {
         borderWidth: 2,
         borderColor: Colors.border,
-        paddingVertical: 5,
+        paddingVertical: 10,
         paddingHorizontal: 10,
         borderRadius: 5,
     }

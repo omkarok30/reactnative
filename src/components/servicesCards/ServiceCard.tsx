@@ -8,7 +8,7 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "@/utils/Constants";
 import { screenWidth } from "@/utils/Scaling";
 
-interface ServiceCardProps {
+export interface ServiceCardProps {
     title: string;
     image?: string;
     tags?: string[]; // Category object
@@ -38,30 +38,39 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
     style,
     topServiceCard
 }) => {
+
     return (
         <Pressable onPress={onPress} style={[style]}>
             <View className="border-gray-400 border-1 rounded-2xl shadow-xl shadow-gray-400 mx-4 mb-6 pb-1 bg-white">
                 {/* Service Image */}
-                <Image
-                    source={{ uri: image }} // Replace with actual image URL 
-                    style={{ height: screenWidth * 0.5 }}
-                    className="rounded-tl-2xl rounded-tr-2xl"
-                />
+                <View className="relative">
+                    <Image
+                        source={{ uri: image }} // Replace with actual image URL 
+                        style={{ height: screenWidth * 0.5 }}
+                        className="rounded-tl-2xl rounded-tr-2xl"
+                    />
+                    <View className="absolute h-full w-full bg-black/20 rounded-tl-2xl rounded-tr-2xl p-2 flex-col justify-end">
+                        {/* Tags */}
+                        <View className="flex-row flex-wrap mt-1">
+                            {tags?.slice(0, 2).map((tag, index) => (
+                                <Text
+                                    key={index}
+                                    className="bg-blue-100 text-blue-600 px-2 py-1 text-xs rounded-full mr-2 mb-2 font-medium"
+                                >
+                                    {tag}
+                                </Text>
+                            ))}
+                            {tags?.length && <Text
+                                className="bg-blue-100 text-blue-600 px-2 py-1 text-xs rounded-full mr-2 mb-2 font-medium"
+                            >
+                                more..
+                            </Text>}
+                        </View>
+                    </View>
+                </View>
                 <View className="px-4">
                     {/* Title */}
                     <H4 className="mt-3">{title}</H4>
-
-                    {/* Tags */}
-                    <View className="flex-row flex-wrap mt-1">
-                        {tags?.map((tag, index) => (
-                            <Text
-                                key={index}
-                                className="bg-blue-100 text-blue-600 px-2 py-1 text-xs rounded-full mr-2 mb-2 font-medium"
-                            >
-                                {tag}
-                            </Text>
-                        ))}
-                    </View>
 
                     {/* Description */}
                     <P className="text-gray-600 mt-2 font-normal" numberOfLines={2}>
@@ -69,13 +78,13 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                     </P>
 
                     {/* Provider Info */}
-                    <View className="flex-row items-center mt-3 gap-2">
+                    {providerName && <View className="flex-row items-center mt-3 gap-2">
                         <Image
                             source={require("@assets/images/avatar.png")}
                             className="w-10 h-10 rounded-full"
                         />
                         <Text className="text-gray-800 text-sm font-semibold">{providerName}</Text>
-                    </View>
+                    </View>}
                 </View>
 
                 {/* Footer */}

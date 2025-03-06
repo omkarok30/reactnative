@@ -2,7 +2,6 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import React, { useState } from 'react'
 import CustomSafeAreaView from '@/components/global/CustomSafeView'
 import { PageHeader } from '@/components/layout/PageHeader'
-import { servicesData } from '@/utils/dummyData'
 import ServiceCard from '@/components/servicesCards/ServiceCard'
 import { H4 } from '@/components/ui/typography'
 import { Button } from '@/components/ui/button'
@@ -11,9 +10,14 @@ import { Colors } from '@/utils/Constants'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons'
 import { navigate } from '@/utils/NavigationUtils'
 import { useAuthStore } from '@/store/useAuthStore'
+import { useFetchAllServices } from '@/hooks/api/useFetchAllServices'
+import CardSkeleton from '@/components/loaders/CardSkeleton'
+import NoResults from '@/components/NoResults'
 
 const PublishScreen = () => {
     const user = useAuthStore(state => state?.user);
+    const { data = [], isLoading, isError } = useFetchAllServices();
+    const servicesData = Array.isArray(data) ? data.filter((item) => item.provider_id !== user.id) : []
     const [view, setView] = useState<"default" | "choose">("default");
     return (
         <CustomSafeAreaView style={{ flex: 1 }}>
@@ -57,26 +61,31 @@ const PublishScreen = () => {
                     )}
                 </View>
 
-
                 <FlatList
                     data={servicesData}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item?.id}
                     contentContainerStyle={{ paddingBottom: 60 }}
                     showsVerticalScrollIndicator={false}
                     ListEmptyComponent={<Text className="text-center pb-3 text-black-300 mt-5">No records found</Text>}
                     horizontal={false}
                     renderItem={({ item }) => (
-                        <ServiceCard
-                            title={item.title}
-                            image={item.photos?.[0] || "https://via.placeholder.com/150"}
-                            tags={[item.category?.name, item.subcategory?.name].filter(Boolean)}
-                            description={item.description}
-                            providerName={`${item.provider.first_name} ${item.provider.last_name}`}
-                            providerImage={item.provider.profile_picture_url || "https://via.placeholder.com/50"}
-                            price={`${item.price}€`}
-                            onChatPress={() => console.log("Chat pressed for", item.title)}
-                            onReservePress={() => console.log("Reserve pressed for", item.title)}
-                        />
+                        <>
+                            {isLoading ? <CardSkeleton /> :
+                                (!servicesData) ? (
+                                    <NoResults />
+                                ) : (<ServiceCard
+                                    title={item?.title}
+                                    image={item?.photos?.[0] || "https://via.placeholder.com/150"}
+                                    tags={[item?.category?.name, item?.subcategory?.name].filter(Boolean)}
+                                    description={item?.description}
+                                    providerName={`${item?.provider?.first_name} ${item?.provider?.last_name}`}
+                                    providerImage={item?.provider?.profile_picture_url || "https://via.placeholder.com/50"}
+                                    price={`${item?.price}€`}
+                                    onChatPress={() => console.log("Chat pressed for", item?.title)}
+                                    onReservePress={() => console.log("Reserve pressed for", item?.title)}
+                                />)}
+                        </>
+
                     )}
                     ListHeaderComponent={
                         <View className="my-5 px-4">

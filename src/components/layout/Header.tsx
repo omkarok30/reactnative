@@ -1,13 +1,15 @@
 import { Text } from "@/components/ui/text";
-import { openLoginModal } from "@/utils/NavigationUtils";
+import { navigate, openLoginModal } from "@/utils/NavigationUtils";
 import { FC, useEffect } from "react";
-import { Animated, View } from "react-native";
+import { Animated, Pressable, View } from "react-native";
 import SearchBar from "./SearchBar";
 import { Button } from "../ui/button";
 import { useAuthStore } from "@/store/useAuthStore";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Colors } from "@/utils/Constants";
 
-const Header_Max_Height = 240;
+const Header_Max_Height = 180;
 const Header_Min_Height = 120;
 const Scroll_Distance = Header_Max_Height - Header_Min_Height;
 
@@ -23,7 +25,7 @@ const Header: FC<{ showNotice: () => void; value?: Animated.Value }> = ({ showNo
 
   const animatedHeaderColor = animatedValue.interpolate({
     inputRange: [0, Scroll_Distance],
-    outputRange: ['#1A1F2C', '#6b7280'],
+    outputRange: [Colors.primary, '#6b7280'],
     extrapolate: 'clamp',
   });
 
@@ -60,7 +62,12 @@ const Header: FC<{ showNotice: () => void; value?: Animated.Value }> = ({ showNo
         </View>
       </View>
 
-      <SearchBar />
+      <View className="flex-row gap-2 w-full items-center justify-between">
+        <SearchBar />
+        <Pressable onPress={() => navigate('Category')} className="bg-white/20 rounded-full p-2">
+          <MaterialCommunityIcons name="view-grid-plus-outline" size={27} color="white" />
+        </Pressable>
+      </View>
       {/* </View> */}
     </Animated.View>
   )

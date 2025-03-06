@@ -211,7 +211,7 @@
 
 // export default MessageScreen
 
-import { View, Text, SafeAreaView, StatusBar, FlatList } from 'react-native'
+import { View, Text, SafeAreaView, StatusBar, FlatList, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react'
 import { PageHeader } from '@/components/layout/PageHeader'
 import ScreenComponent from '@/components/global/ScreenComponent'
@@ -223,19 +223,23 @@ import { conversations } from '@/utils/dummyData'
 import ConversationsList from '@/components/messages/ConversationsList'
 import useDebounce from '@/hooks/useDebounce'
 import { Colors } from '@/utils/Constants'
+import { useAuthStore } from '@/store/useAuthStore'
+import { useConversationFetching } from '@/hooks/conversations/useConversationFetching'
 
 const MessageScreen = () => {
+  const user = useAuthStore(state => state.user); // ✅ Get user from Zustand
+  const { conversations, error, refetch, isLoading } = useConversationFetching(user.id);
   const [search, setSearch] = useState<string>("");
   const debouncedSearch = useDebounce(search, 300); // Debounce to optimize filtering
-
-  const filteredConversations = conversations.filter((conversation) =>
+  const filteredConversations = conversations ? conversations?.filter((conversation) =>
     conversation.participants.some((participant) =>
       `${participant.first_name} ${participant.last_name}`
         .toLowerCase()
         .includes(debouncedSearch.toLowerCase())
     )
-  );
+  ) : [];
 
+  console.log("filteredConversations", JSON.stringify(filteredConversations));
   return (
     <CustomSafeAreaView>
       <PageHeader title='Messages' />
@@ -264,7 +268,7 @@ const MessageScreen = () => {
           </View>
         )
         }
-        <ConversationsList conversations={filteredConversations} />
+        {isLoading ? <ActivityIndicator size='large' color={Colors.primary} /> : <ConversationsList conversations={filteredConversations} refresh={refetch} isLoading={isLoading} />}
       </View>
 
     </CustomSafeAreaView>
