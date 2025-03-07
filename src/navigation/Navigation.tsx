@@ -4,7 +4,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import BottomTabsNavigator from "./bottomNavigation/BottomTabsNavigator";
 import LoginScreen from "@/features/auth/LoginScreen";
 import RegisterScreen from "@/features/auth/RegisterScreen";
-import ChatScreen from "@/features/ChatScreen";
+import ChatScreen from "@/features/message/ChatScreen";
 import ProfileInfoScreen from "@/features/accounts/ProfileInfoScreen";
 import Notifications from "@/features/accounts/Notifications";
 import Privacy from "@/features/accounts/Privacy";
@@ -16,6 +16,8 @@ import { Colors } from "@/utils/Constants";
 import AuthLayout from "@/features/auth/AuthLayout";
 import { navigationRef } from "@/utils/NavigationUtils";
 import SearchFilterScreen from "@/features/SearchFilterScreen";
+import useUnreadMessages from "@/hooks/conversations/useUnreadMessages";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const Stack = createStackNavigator();
 
@@ -29,7 +31,7 @@ const Navigation: FC = () => {
                         name="Chat"
                         component={ChatScreen}
                         options={{
-                            title: "Chat",
+                            animation: "slide_from_right",
                         }}
                     />
                     <Stack.Screen name="Profile" component={ProfileInfoScreen} />
@@ -49,7 +51,6 @@ const Navigation: FC = () => {
                             headerTintColor: "#fff",
                             headerTitleStyle: { fontSize: 20, fontWeight: "bold" },
                             animation: 'slide_from_right', cardStyle: {
-                                marginTop: 50,  // 👈 Creates a gap at the top
                                 borderTopLeftRadius: 20,
                                 borderTopRightRadius: 20,
                                 overflow: "hidden",
@@ -74,6 +75,7 @@ const Navigation: FC = () => {
                         name="Search"
                         component={SearchFilterScreen}
                         options={{
+                            presentation: "transparentModal",
                             headerShown: false,
                             cardStyle: {
                                 marginTop: 50,  // 👈 Creates a gap at the top
@@ -81,8 +83,9 @@ const Navigation: FC = () => {
                                 borderTopRightRadius: 20,
                                 overflow: "hidden",
                             },
+                            headerTransparent: true,
+                            gestureEnabled: false,
                         }}
-
                     />
                 </Stack.Group>
             </Stack.Navigator>

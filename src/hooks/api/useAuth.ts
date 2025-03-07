@@ -41,7 +41,7 @@ export const useAuth = (isRegister: boolean) => {
         },
         onSuccess(data, variables, context) {
             const setAuth = useAuthStore.getState().setAuth;
-            // console.log(data)
+            console.log(data)
             setAuth(data.user, data.session);
             goBack()
         },

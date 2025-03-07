@@ -17,7 +17,7 @@ import NoResults from '@/components/NoResults'
 const PublishScreen = () => {
     const user = useAuthStore(state => state?.user);
     const { data = [], isLoading, isError } = useFetchAllServices();
-    const servicesData = Array.isArray(data) ? data.filter((item) => item.provider_id !== user.id) : []
+    const servicesData = Array.isArray(data) && user ? data.filter((item) => item.provider_id !== user.id) : []
     const [view, setView] = useState<"default" | "choose">("default");
     return (
         <CustomSafeAreaView style={{ flex: 1 }}>

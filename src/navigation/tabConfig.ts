@@ -2,7 +2,7 @@ import AccountScreen from "@/features/accounts/AccountScreen";
 import ActivityScreen from "@/features/ActivityScreen";
 import CategoryScreen from "@/features/CategoryScreen";
 import ReserveScreen from "@/features/dashboard/ReserveScreen";
-import MessageScreen from "@/features/MessageScreen";
+import MessageScreen from "@/features/message/MessageScreen";
 import PublishScreen from "@/features/Publications/PublishScreen";
 
 

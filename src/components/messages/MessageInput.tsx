@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { View, TextInput, Pressable, Text, StyleSheet } from "react-native";
@@ -12,12 +12,15 @@ const messageSchema = z.object({
 // Define the form types
 type MessageFormData = z.infer<typeof messageSchema>;
 
+type PropsT = {
+    onhandleSend: (message: string) => void
+}
+
 //{ onSend }: { onSend: (message: string) => void }
-const MessageInput = () => {
+const MessageInput = ({ onhandleSend }: PropsT) => {
     const {
-        register,
         handleSubmit,
-        setValue,
+        control,
         formState: { errors, isValid },
         reset,
     } = useForm<MessageFormData>({
@@ -25,10 +28,9 @@ const MessageInput = () => {
         mode: "onChange", // Validate on every change
     });
 
-    const handleSend = async (message: any) => { console.log(message) }
     // Form submission
     const onSubmit = (data: MessageFormData) => {
-        handleSend(data.message);
+        onhandleSend(data.message);
         reset(); // Reset input field after sending
     };
 
@@ -36,10 +38,18 @@ const MessageInput = () => {
         <View className="absolute bottom-0 left-0 right-0 p-4 bg-white dark:bg-gray-900 border-t border-gray-300 dark:border-gray-700 flex-row items-center gap-2">
             {/* Text Input */}
             <View className="flex-row gap-2">
-                <TextInput
-                    placeholder="Écrivez votre message..."
-                    onChangeText={(text) => setValue("message", text, { shouldValidate: true })}
-                    className={`flex-1 px-4 py-2 rounded-lg border  dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-black dark:text-white ${errors.message ? 'border-red-600' : 'border-gray-300'}`}
+                <Controller
+                    name="message"
+                    control={control}
+                    render={({ field: { onChange, value } }) => (
+                        <TextInput
+                            placeholder="Écrivez votre message..."
+                            value={value} // Controlled value
+                            onChangeText={onChange} // Updates form state 
+                            className={`flex-1 px-4 py-2 rounded-lg border  dark:border-gray-700 bg-gray-100 dark:bg-gray-800 text-black dark:text-white ${errors.message ? "border-red-600" : "border-gray-300"
+                                }`}
+                        />
+                    )}
                 />
 
                 {/* Send Button */}
@@ -47,6 +57,7 @@ const MessageInput = () => {
                     onPress={handleSubmit(onSubmit)}
                     disabled={!isValid}
                     className={`w-10 h-10 rounded-full flex items-center justify-center ${isValid ? "bg-blue-500" : "bg-gray-400"}`}
+
                 >
                     <Ionicons name="send" size={20} color="white" />
                 </Pressable>

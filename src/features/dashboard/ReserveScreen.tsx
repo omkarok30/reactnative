@@ -13,11 +13,17 @@ import { useFetchAllServices } from '@/hooks/api/useFetchAllServices';
 import CardSkeleton from '@/components/loaders/CardSkeleton';
 import NoResults from '@/components/NoResults';
 import CategoryScreen from '../CategoryScreen';
+import useAuthCheckAction from '@/hooks/useAuthCheckAction';
 
 function ReserveScreen() {
   const scrollOffsetY = useRef(new Animated.Value(0)).current;
-
+  const checkAuthAction = useAuthCheckAction();
   const { data: servicesData = [], isLoading, isError } = useFetchAllServices();
+
+  const handleChatWithProvider = () => {
+    if (!checkAuthAction()) return;
+    console.log("Start Conversation")
+  }
 
   return (
     <CustomSafeAreaView style={{ flex: 1 }}>
@@ -74,7 +80,7 @@ function ReserveScreen() {
                 providerName={item?.provider ? `${item?.provider?.first_name} ${item?.provider?.last_name}` : ""}
                 providerImage={item?.provider?.profile_picture_url || "https://via.placeholder.com/50"}
                 price={`${item?.price}€`}
-                onChatPress={() => console.log("Chat pressed for", item?.title)}
+                onChatPress={() => handleChatWithProvider()}
                 onReservePress={() => console.log("Reserve pressed for", item?.title)}
                 onPress={() => navigate("ServiceDetails")}
               />)

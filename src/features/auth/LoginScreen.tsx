@@ -46,6 +46,8 @@ const LoginScreen: FC = () => {
                     <Image
                         source={require("@assets/images/playstorewhite.png")}
                         className='w-20 h-16 filter brightness-0 invert'
+                        style={{ width: 50, height: 50 }}
+                        alt="Logo"
                     />
                     {/* <Text className="text-white text-center text-2xl font-bold">Sign in to your Account</Text> */}
                     <LoginForm />

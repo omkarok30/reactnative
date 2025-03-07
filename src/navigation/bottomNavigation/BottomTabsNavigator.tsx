@@ -4,13 +4,20 @@ import Ionicons from '@expo/vector-icons/Ionicons';
 import TabNavigator from "./CustomTabBar";
 import { ICONS, SCREENS } from "../tabConfig";
 import { Alert, BackHandler } from "react-native";
-import { useRoute } from "@react-navigation/native";
+import { RouteProp, useRoute } from "@react-navigation/native";
 import { goBack, navigate, navigationRef, prepareNavigation } from "@/utils/NavigationUtils";
+import { useAuthStore } from "@/store/useAuthStore";
+import useUnreadMessages from "@/hooks/conversations/useUnreadMessages";
 
 const Tab = createBottomTabNavigator();
+type BottomTabParams = {
+    Main: { unreadCount?: number };
+};
 
 const BottomTabsNavigator: React.FC = () => {
-    const route = useRoute();
+    const user = useAuthStore(state => state.user)
+    const { unreadCount } = useUnreadMessages(user?.id);
+    const route = useRoute<RouteProp<BottomTabParams>>();
 
     useEffect(() => {
         const backAction = () => {
@@ -28,7 +35,7 @@ const BottomTabsNavigator: React.FC = () => {
 
     return (
         <Tab.Navigator
-            tabBar={(props) => <TabNavigator {...props} />}
+            tabBar={(props) => <TabNavigator {...props} user={user} />}
             screenOptions={{
                 headerShown: false,
                 animation: "fade",
@@ -42,7 +49,7 @@ const BottomTabsNavigator: React.FC = () => {
                     component={SCREENS[screen]}
                     options={{
                         tabBarIcon: ({ color, size }) => <Ionicons name={(ICONS[screen] as keyof typeof Ionicons.glyphMap)} size={size} color={color} />,
-                        tabBarBadge: screen === "Messages" ? 2 : undefined,
+                        tabBarBadge: screen === "Messages" ? unreadCount : undefined,
                         tabBarBadgeStyle: {
                             color: "black",
                             backgroundColor: "yellow",

@@ -225,21 +225,24 @@ import useDebounce from '@/hooks/useDebounce'
 import { Colors } from '@/utils/Constants'
 import { useAuthStore } from '@/store/useAuthStore'
 import { useConversationFetching } from '@/hooks/conversations/useConversationFetching'
+import { Conversation } from '@/types/conversations'
+import CategoryListLoader from '@/components/loaders/CategoryListLoader'
 
 const MessageScreen = () => {
   const user = useAuthStore(state => state.user); // ✅ Get user from Zustand
-  const { conversations, error, refetch, isLoading } = useConversationFetching(user.id);
+  const { data: conversations, isLoading } = useConversationFetching(user?.id);
   const [search, setSearch] = useState<string>("");
-  const debouncedSearch = useDebounce(search, 300); // Debounce to optimize filtering
+  const debouncedSearch = useDebounce(search, 300); // Debounce to optimize filtering 
+
   const filteredConversations = conversations ? conversations?.filter((conversation) =>
-    conversation.participants.some((participant) =>
-      `${participant.first_name} ${participant.last_name}`
+    conversation.participants.some((participant: any) =>
+      `${participant?.first_name} ${participant?.last_name}`
         .toLowerCase()
         .includes(debouncedSearch.toLowerCase())
     )
   ) : [];
 
-  console.log("filteredConversations", JSON.stringify(filteredConversations));
+  // console.log("filteredConversations", JSON.stringify(filteredConversations));
   return (
     <CustomSafeAreaView>
       <PageHeader title='Messages' />
@@ -257,7 +260,7 @@ const MessageScreen = () => {
         </View>
       </View>
       <View style={{ flex: 1 }}>
-        {(filteredConversations.length === 0) && (
+        {(filteredConversations && filteredConversations.length === 0) && (
           <View className="flex-1 items-center justify-center">
             <Ionicons name="chatbox-ellipses-outline" size={48} color={Colors.border} className="text-gray-500 dark:text-gray-500" />
             <Text className="text-gray-500 dark:text-gray-400 text-center font-semibold mt-3">
@@ -268,7 +271,7 @@ const MessageScreen = () => {
           </View>
         )
         }
-        {isLoading ? <ActivityIndicator size='large' color={Colors.primary} /> : <ConversationsList conversations={filteredConversations} refresh={refetch} isLoading={isLoading} />}
+        {user && <ConversationsList conversations={filteredConversations} isLoading={isLoading} currentUserId={user?.id} />}
       </View>
 
     </CustomSafeAreaView>

@@ -18,13 +18,12 @@ export const formatISOToCustom = (isoString: string) => {
 }
 
 export const formatMessageDate = (date: Date) => {
-    const localDate = new Date(date.getTime() - date.getTimezoneOffset() * 60000); // Convert UTC to local
-
-    if (isToday(localDate)) {
-        return format(localDate, 'HH:mm', { locale: fr }); // Show hours if today
-    } else if (isYesterday(localDate)) {
-        return 'Hier'; // Show "Yesterday"
+    console.log(date)
+    if (isToday(date)) {
+      return format(date, 'HH:mm', { locale: fr });
+    } else if (isYesterday(date)) {
+      return 'Hier';
     } else {
-        return format(localDate, 'dd/MM/yy', { locale: fr }); // Show full date
+      return format(date, 'dd/MM/yy', { locale: fr });
     }
 };

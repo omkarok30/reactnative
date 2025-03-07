@@ -9,17 +9,16 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 
 interface ConversationsListProps {
     conversations: Conversation[];
-    refresh: () => void;
     isLoading: boolean;
+    currentUserId: string;
 }
-const ConversationsList = ({ conversations, refresh, isLoading }: ConversationsListProps) => {
+const ConversationsList = ({ conversations, isLoading, currentUserId }: ConversationsListProps) => {
 
     return (
         <FlatList
             data={conversations}
             keyExtractor={(item) => item.id}
             refreshing={isLoading}
-            onRefresh={() => refresh()}
             renderItem={({ item, index }) => {
                 const lastMessage = item.messages[0];
                 const participant = item.participants[0]; // Assuming 1-to-1 chat
@@ -27,7 +26,7 @@ const ConversationsList = ({ conversations, refresh, isLoading }: ConversationsL
                 return (
                     <TouchableOpacity
                         key={item.id}
-                        onPress={() => navigate("Chat", { userName: `${participant?.first_name} ${participant?.last_name}`, conversationId: item.id })}
+                        onPress={() => navigate("Chat", { userName: `${participant?.first_name} ${participant?.last_name}`, conversationId: item.id, currentUserId })}
                         style={[
                             styles.userContainer,
                             index % 2 === 0 ? styles.oddBackground : null

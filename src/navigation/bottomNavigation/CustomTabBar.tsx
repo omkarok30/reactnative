@@ -5,15 +5,19 @@ import { ICONS } from '../tabConfig';
 import { useEffect, useState } from 'react';
 import { Colors } from '@/utils/Constants';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { Text } from '@/components/ui/text';
 // import { useAuthStore } from '@store/useAuthStore';
 
 const AnimatedTouchableOpacity =
     Animated.createAnimatedComponent(TouchableOpacity);
 
-const CustomTabBar: React.FC<BottomTabBarProps> = ({
+type CustomTabBarProps = BottomTabBarProps & { user: object | null };
+
+const CustomTabBar: React.FC<CustomTabBarProps> = ({
     state,
     descriptors,
     navigation,
+    user
 }) => {
 
     // const { user, checkUser } = useAuthStore();
@@ -89,10 +93,22 @@ const CustomTabBar: React.FC<BottomTabBarProps> = ({
                         style={[
                             styles.tabItem,
                             { backgroundColor: "transparent" },
-                            // (!user && !isFocused) && { opacity: 0.5, pointerEvents: 'none' }, // Disable button if not authenticated}
+                            (!user && !isFocused) && { opacity: 0.5, pointerEvents: 'none' }, // Disable button if not authenticated}
                         ]}
+                        disabled={!user}
                     >
                         {<Ionicons name={ICONS[route.name] as keyof typeof Ionicons.glyphMap} size={isFocused ? 30 : 28} color={isFocused ? Colors.primary : Colors.gray} style={{ fontWeight: 'bold' }} />}
+                        {(Number(options?.tabBarBadge) > 0) && (
+                            <View className='absolute -top-1 right-3 bg-red-600 w-5 h-5 rounded-full flex items-center justify-center'
+                                style={{
+                                    elevation: 2, // Android Shadow
+                                }}
+                            >
+                                <Text className='text-white text-xs font-semibold'>
+                                    {options?.tabBarBadge}
+                                </Text>
+                            </View>
+                        )}
                         {!isFocused && (
                             <Animated.Text
                                 entering={FadeIn.duration(200)}
