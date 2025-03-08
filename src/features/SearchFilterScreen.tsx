@@ -43,7 +43,7 @@ const SearchFilterScreen = () => {
                 >
                     <View className="flex-row items-center">
                         <Ionicons name="search" size={20} className="text-gray-600" />
-                        <Input className="text-sm border-0 border-transparent bg-transparent text-gray-400 placeholder:text-sm" placeholder='Search for anything...' />
+                        <Input className="border-0 border-transparent bg-transparent text-gray-400 placeholder:text-sm" placeholder='Search for anything...' />
                     </View>
 
                     <TouchableOpacity

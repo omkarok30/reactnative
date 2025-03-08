@@ -60,12 +60,12 @@ const SalesCard: React.FC<SalesCardProps> = ({
                             {/* Tags */}
                             <View className="flex-row flex-wrap mt-1">
                                 <Text
-                                    className="bg-primary text-white px-3 py-2 text-xs font-semibold rounded-full first-line:marker:font-medium"
+                                    className="bg-primary text-white px-3 py-2 text-xs font-semibold rounded-full"
                                 >
                                     {category}
                                 </Text>
                                 <Text
-                                    className="bg-primary text-white px-3 py-2 text-xs font-semibold rounded-full first-line:marker:font-medium"
+                                    className="bg-primary text-white px-3 py-2 text-xs font-semibold rounded-full"
                                 >
                                     {subcategory}
                                 </Text>
