@@ -39,7 +39,7 @@ const Header: FC<{ showNotice: () => void; value?: Animated.Value }> = ({ showNo
     outputRange: [Colors.primary, Colors.white],
     extrapolate: 'clamp',
   });
-
+  console.log(JSON.stringify(user))
   return (
     <Animated.View
       style={[
@@ -59,7 +59,7 @@ const Header: FC<{ showNotice: () => void; value?: Animated.Value }> = ({ showNo
                 Good Morning
               </Text>
               <Text className="text-lg text-white leading-none font-bold">
-                {`${user?.user_metadata?.first_name} ${user?.user_metadata?.last_name}`}
+                {`${user?.user_metadata?.first_name || user?.user_metadata?.firstName} ${user?.user_metadata?.last_name ?? user?.user_metadata?.lastName}`}
               </Text>
             </>)
               : <Image source={require("@/assets/images/playstorewhite.png")} style={{ width: 25, height: 25 }} />
