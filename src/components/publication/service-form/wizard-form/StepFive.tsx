@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button'
 import { Text } from '@/components/ui/text'
 import { UseFormGetValues, UseFormReset } from 'react-hook-form'
 import { ServiceFormData } from '@/types/services'
-import { useNavigation, useRoute } from '@react-navigation/native'
+import { useRoute } from '@react-navigation/native'
 import { navigate } from '@/utils/NavigationUtils'
 import { useSubmitService } from '@/hooks/api/useSubmitService'
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog'
@@ -24,8 +24,7 @@ const StepFive = ({ getValues, reset }: PropType) => {
 
   useEffect(() => {
     if (isSuccess) {
-      reset();
-      navigate('');
+      setOpen(true);
     }
   }, [isSuccess]);
 
@@ -44,18 +43,27 @@ const StepFive = ({ getValues, reset }: PropType) => {
       </P>
 
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className='sm:max-w-[425px]'>
+        <DialogContent className='w-4/5'>
           <DialogHeader>
-            <DialogTitle>Edit profile</DialogTitle>
+            <DialogTitle>Congratulations!!</DialogTitle>
             <DialogDescription>
-              Make changes to your profile here. Click save when you're done.
+              Service created successfully.
             </DialogDescription>
           </DialogHeader>
-          <Button onPress={() => setOpen(false)} className='bg-green-600'><Text className='text-white'>Close</Text></Button>
+          <Button
+            onPress={() => {
+              setOpen(false)
+              reset();
+              navigate("MyPublication");
+            }}
+            className='bg-green-600'
+          >
+            <Text className='text-white'>Close</Text>
+          </Button>
         </DialogContent>
       </Dialog>
 
-      <Button onPress={() => setOpen(true)} className='mt-6'>
+      <Button onPress={() => handleSubmit()} className='mt-6'>
         <Text className=' text-white font-semibold'>Publier l'annonce</Text>
       </Button>
     </View>

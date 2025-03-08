@@ -19,9 +19,10 @@ const Checkbox = React.forwardRef<CheckboxPrimitive.RootRef, CheckboxPrimitive.R
         <CheckboxPrimitive.Indicator className={cn('items-center justify-center h-full w-full')}>
           <Ionicons
             name='checkmark-outline'
-            size={12}
+            size={13}
+            color='white'
             strokeWidth={Platform.OS === 'web' ? 2.5 : 3.5}
-            className='text-primary-foreground'
+            className='text-white'
           />
         </CheckboxPrimitive.Indicator>
       </CheckboxPrimitive.Root>

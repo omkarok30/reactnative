@@ -1,8 +1,8 @@
-import { View } from 'react-native'
+import { ActivityIndicator, View } from 'react-native'
 import React, { useState } from 'react'
 import { StyleSheet } from 'react-native';
 import { Colors } from '@/utils/Constants';
-import { Route, SceneMap, TabBar, TabView } from 'react-native-tab-view'; 
+import { Route, SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import { PublicationServiceCard } from './PublicationServiceCard';
 import { screenWidth } from '@/utils/Scaling';
 import { Text } from '@/components/ui/text';
@@ -30,6 +30,13 @@ const ServiceList = () => {
                 return null;
         }
     };
+
+    if (salesLoading || servicesLoading) {
+        return <View className='py-4 flex justify-center items-center flex-1'>
+            <ActivityIndicator size='large' color={Colors.primary} />
+            <Text>Chargement des services en cours...</Text>
+        </View>
+    }
 
     return (
         <TabView

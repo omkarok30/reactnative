@@ -9,3 +9,13 @@ export type SaleFormData = {
   condition: string;
   location: string;
 };
+export interface SelectedItem {
+  name: string;
+}
+
+export interface PredefinedItem {
+  id: number;
+  subcategory_id: number | null;
+  name: string;
+  created_at: string;
+}

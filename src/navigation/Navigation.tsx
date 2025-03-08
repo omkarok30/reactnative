@@ -18,6 +18,7 @@ import { navigationRef } from "@/utils/NavigationUtils";
 import SearchFilterScreen from "@/features/SearchFilterScreen";
 import useUnreadMessages from "@/hooks/conversations/useUnreadMessages";
 import { useAuthStore } from "@/store/useAuthStore";
+import AddSales from "@/features/Publications/AddSales";
 
 const Stack = createStackNavigator();
 
@@ -39,6 +40,7 @@ const Navigation: FC = () => {
                     <Stack.Screen name="Privacy" component={Privacy} />
                     <Stack.Screen name="Payments" component={PaymentMethods} />
                     <Stack.Screen name="Addservice" component={AddServices} />
+                    <Stack.Screen name="Addsale" component={AddSales} />
                     <Stack.Screen name="MyPublication" component={MyPublications} />
 
                     <Stack.Screen

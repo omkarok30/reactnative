@@ -1,5 +1,5 @@
 import { useGoogleMapsKey } from "@/hooks/useGoogleMapsKey";
-import { useServiceFormStore } from "@/store/useServiceFormStore"; 
+import { useFormStore } from "@/store/useServiceFormStore";
 import React, { useEffect, useRef, useState, forwardRef } from "react";
 import { View, ActivityIndicator } from "react-native";
 import { GooglePlacesAutocomplete, GooglePlacesAutocompleteRef } from "react-native-google-places-autocomplete";
@@ -20,12 +20,14 @@ interface LocationAutocompleteProps {
 export const LocationAutocomplete = forwardRef<GooglePlacesAutocompleteRef, LocationAutocompleteProps>(
   ({ value, onChange, onLocationSelect }, ref) => {
     const googleRef = useRef<GooglePlacesAutocompleteRef>(null)
-    const location = useServiceFormStore((state) => state.formData.service_area);
+    const location = useFormStore((state) => state.serviceFormData.service_area);
+    const address = useFormStore((state) => state.salesFormData.location);
     const { apiKey, isLoading: isKeyLoading } = useGoogleMapsKey();
-    const [searchText, setSearchText] = useState(value || location);
+    
+    const [searchText, setSearchText] = useState(value || location || address);
 
     useEffect(() => {
-      googleRef?.current?.setAddressText(location);
+      googleRef?.current?.setAddressText(location || address);
     }, [location]);
 
     return (
@@ -39,7 +41,6 @@ export const LocationAutocomplete = forwardRef<GooglePlacesAutocompleteRef, Loca
             placeholder="Entrez une adresse"
             fetchDetails
             debounce={300}
-            preProcess={() => location}
             query={{
               key: apiKey,
               language: "fr",

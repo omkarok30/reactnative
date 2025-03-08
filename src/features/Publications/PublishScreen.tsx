@@ -52,7 +52,7 @@ const PublishScreen = () => {
                                 </TouchableOpacity>
 
                                 {/* Publier une vente */}
-                                <TouchableOpacity className="flex-1 bg-white px-1 py-2 rounded-lg shadow-md items-center border-2 border-primary" onPress={() => navigate("Addservice", { id: user?.id ?? undefined })}>
+                                <TouchableOpacity className="flex-1 bg-white px-1 py-2 rounded-lg shadow-md items-center border-2 border-primary" onPress={() => navigate("Addsale", { id: user?.id ?? undefined })}>
                                     <MaterialCommunityIcons name="shopping" size={24} color={Colors.primary} />
                                     <Text className="text-foreground font-semibold text-sm mt-2">Publier une vente</Text>
                                 </TouchableOpacity>

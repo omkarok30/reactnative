@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { View, Text, ScrollView, FlatList } from "react-native";
+import { View, Text, ScrollView, FlatList, ActivityIndicator } from "react-native";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { FormProvider, useForm } from "react-hook-form";
 import { goBack, navigate } from "@/utils/NavigationUtils";
@@ -16,16 +16,17 @@ import StepOne from "@/components/publication/service-form/wizard-form/StepOne";
 import { Button } from "@/components/ui/button";
 import { serviceFormSchema, ServiceFormSchema } from "@/models/ServiceFormSchema";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useServiceFormStore } from "@/store/useServiceFormStore";
+import { useFormStore } from "@/store/useServiceFormStore";
 import StepTwo from "@/components/publication/service-form/wizard-form/StepTwo";
 import StepThree from "@/components/publication/service-form/wizard-form/StepThree";
 import StepFour from "@/components/publication/service-form/wizard-form/StepFour";
 import StepFive from "@/components/publication/service-form/wizard-form/StepFive";
+import { Colors } from "@/utils/Constants";
 
 
 export default function AddService() {
     const { showToast } = useToastStore();
-    const { formData, setFormData, resetForm } = useServiceFormStore();
+    const { serviceFormData: formData, setServiceFormData: setFormData, resetServiceForm: resetForm } = useFormStore();
     const route = useRoute();
     const [serviceId, setServiceId] = useState<string | null>(null);
     const { id } = route.params as { id?: string };
@@ -35,10 +36,10 @@ export default function AddService() {
         defaultValues: formData,
     });
 
-    const { control, setValue, handleSubmit, watch, reset, getValues, formState: { errors } } = methods;
+    const { control, setValue, watch, reset, getValues, formState: { errors } } = methods;
     const [currentStep, setCurrentStep] = useState(1);
     const totalSteps = 5;
-    console.log(errors)
+
     // Fetch service data using the custom hook
     const { isLoading, error } = useFetchService(serviceId || null, reset);
 
@@ -82,9 +83,9 @@ export default function AddService() {
     return (
         <CustomSafeAreaView>
             <PageHeader title={serviceId ? "Modifier l'annonce" : "Ajouter un service"} backUrl />
-            <FlatList
-                ListHeaderComponent={
-                    <>
+            {isLoading ? <ActivityIndicator size="large" color={Colors.primary} /> :
+                <FlatList
+                    ListHeaderComponent={
                         <View className="flex-1 px-4 py-6">
                             <StepHeader currentStep={currentStep} totalSteps={totalSteps} />
                             <View className="p-6 mb-20 bg-white dark:bg-gray-800 shadow-lg rounded-2xl">
@@ -119,12 +120,11 @@ export default function AddService() {
                                 </FormProvider>
                             </View>
                         </View>
-                    </>
-                }
-                data={[]} // Empty array since content is in ListHeaderComponent
-                renderItem={null} // No need to render anything else
-                keyboardShouldPersistTaps="handled"
-            />
+                    }
+                    data={[]} // Empty array since content is in ListHeaderComponent
+                    renderItem={null} // No need to render anything else
+                    keyboardShouldPersistTaps="handled"
+                />}
 
         </CustomSafeAreaView>
     );

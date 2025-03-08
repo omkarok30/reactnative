@@ -36,7 +36,7 @@ const Header: FC<{ showNotice: () => void; value?: Animated.Value }> = ({ showNo
 
   const animatedLoginTextColor = animatedValue.interpolate({
     inputRange: [0, Scroll_Distance],
-    outputRange: [Colors.text, Colors.white],
+    outputRange: [Colors.primary, Colors.white],
     extrapolate: 'clamp',
   });
 
@@ -70,9 +70,9 @@ const Header: FC<{ showNotice: () => void; value?: Animated.Value }> = ({ showNo
           {user ?
             <Ionicons name="notifications-outline" size={24} color='#FFF' /> :
             <Pressable className="flex-row" onPress={() => openLoginModal("LoginScreen")}>
-              <Animated.View style={{ backgroundColor: animatedLoginColor }} className='h-9 rounded px-3'>
-                <Animated.Text style={{ color: animatedLoginTextColor }}>
-                  <Text className="">Login</Text>
+              <Animated.View style={{ backgroundColor: animatedLoginColor }} className='rounded px-3 h-9'>
+                <Animated.Text style={{ color: animatedLoginTextColor, marginTop: 2, fontWeight: 500, fontSize: 14 }}>
+                  Login
                 </Animated.Text>
               </Animated.View>
             </Pressable>}

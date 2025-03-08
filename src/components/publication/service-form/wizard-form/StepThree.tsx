@@ -88,8 +88,9 @@ const StepThree = ({ control, setValue, watch }: PropsType) => {
                       onChange(newValue);
                     }}
                     className='border-[2px]'
+                    aria-labelledby={slot.label}
                   />
-                  <Text className='ml-2 text-sm'>{slot.label}</Text>
+                  <Label className='ml-2' style={{fontSize: 12}} nativeID={slot.label}>{slot.label}</Label>
                 </View>
               ))}
             </View>

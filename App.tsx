@@ -22,7 +22,7 @@ export default function App() {
   useEffect(() => {
     // Check initial auth state
     supabase.auth.getSession().then(({ data: { session } }) => {
-      console.log(session)
+      // console.log(session)
       setAuth(session?.user, session);
     });
 
@@ -30,7 +30,7 @@ export default function App() {
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange((_event, session) => {
-      console.log(session)
+      // console.log(session)
       setAuth(session?.user ?? null, session);
     });
 

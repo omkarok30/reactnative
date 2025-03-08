@@ -1,7 +1,7 @@
 import { checkUploadLimit, uploadFile } from "@/utils/uploadHelpers";
 import Ionicons from "@expo/vector-icons/Ionicons";
 import React, { useState, useEffect } from "react";
-import { View, Alert } from "react-native";
+import { View, Alert, ActivityIndicator } from "react-native";
 import { PhotoPreview } from "./PhotoPreview";
 import { useToastStore } from "@/store/useToastStore";
 import * as ImagePicker from "expo-image-picker";
@@ -9,14 +9,16 @@ import { Button } from "../ui/button";
 import { Colors } from "@/utils/Constants";
 import { Text } from "../ui/text";
 import { useAuthStore } from "@/store/useAuthStore";
+import { useFormStore } from "@/store/useServiceFormStore";
 
 interface PhotoUploadProps {
   onPhotosChange: (photos: string[]) => void;
 }
 
 export function PhotoUpload({ onPhotosChange }: PhotoUploadProps) {
+  const { salesFormData } = useFormStore(); 
   const user = useAuthStore((state) => state?.user)
-  const [photos, setPhotos] = useState<string[]>([]);
+  const [photos, setPhotos] = useState<string[]>(salesFormData?.photos || []);
   const [uploading, setUploading] = useState(false);
   const { showToast } = useToastStore();
 
@@ -29,17 +31,12 @@ export function PhotoUpload({ onPhotosChange }: PhotoUploadProps) {
     })();
   }, []);
 
-  const uriToFile = async (uri: string, name: string): Promise<File> => {
-    const response = await fetch(uri);
-    const blob = await response.blob();
-    return new File([blob], name, { type: blob.type });
-  };
-
   const handleSelectImage = async () => {
     try {
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ["images"],
         allowsMultipleSelection: true,
+        aspect: [4, 3],
         quality: 1,
         selectionLimit: 3 - photos.length,
       });
@@ -50,7 +47,7 @@ export function PhotoUpload({ onPhotosChange }: PhotoUploadProps) {
         showToast("error", "Erreur", "Maximum 3 photos autorisées");
         return;
       }
- 
+
       if (!user) {
         showToast("error", "Erreur", "Vous devez être connecté pour uploader des photos");
         return;
@@ -63,8 +60,7 @@ export function PhotoUpload({ onPhotosChange }: PhotoUploadProps) {
         if (!file.uri) continue;
         try {
           const filename = file.fileName ?? `image_${Date.now()}.jpg`;
-          const fileObj = await uriToFile(file.uri, filename);
-          const publicUrl = await uploadFile(fileObj);
+          const publicUrl = await uploadFile(file);
           if (publicUrl) uploadedPhotos.push(publicUrl);
         } catch (error: any) {
           console.log(error.message);
@@ -93,7 +89,7 @@ export function PhotoUpload({ onPhotosChange }: PhotoUploadProps) {
       <PhotoPreview photos={photos} onRemove={removePhoto} />
       {photos.length < 3 && (
         <Button variant="outline" onPress={handleSelectImage} disabled={uploading} className="flex-row">
-          <Ionicons name="cloud-upload-outline" size={20} color={Colors.primary} />
+          {uploading ? <ActivityIndicator color={Colors?.primary} /> : <Ionicons name="cloud-upload-outline" size={20} color={Colors.primary} />}
           <Text className="text-primary" style={{ marginLeft: 8 }}>
             {uploading ? "Upload en cours..." : "Ajouter des photos"}
           </Text>
