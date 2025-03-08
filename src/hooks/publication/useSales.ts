@@ -75,9 +75,15 @@ export function useSales(id: string | null) {
         deleteSaleMutation.mutate(saleId);
     };
 
+    // Function to manually revalidate the query
+    const revalidateSales = () => {
+        queryClient.invalidateQueries({ queryKey: ["user-sales", id] });
+    };
+
     return {
         sales,
         loading,
-        handleDelete
+        handleDelete,
+        revalidateSales
     };
 }

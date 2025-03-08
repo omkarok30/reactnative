@@ -8,42 +8,45 @@ import Ionicons from "@expo/vector-icons/Ionicons";
 import { Colors } from "@/utils/Constants";
 import { screenWidth } from "@/utils/Scaling";
 
-export interface ServiceCardProps {
+export interface SalesCardProps {
     title: string;
-    image?: string;
-    tags?: string[]; // Category object
     description: string;
-    providerName?: string;
-    providerImage?: string | null | undefined;
     price: string;
-    rating?: number;
-    onChatPress?: () => void;
-    onReservePress?: () => void;
-    onPress?: () => void;
-    style?: object,
-    topServiceCard?: boolean;
+    rating: number;
+    image: string;
+    seller: string;
+    category?: string;
+    subcategory?: string;
     isBlurred?: boolean;
-    serviceId?: string;
+    saleId?: string;
 }
 
-const ServiceCard: React.FC<ServiceCardProps> = ({
+const SalesCard: React.FC<SalesCardProps> = ({
     title,
-    image,
-    tags,
     description,
-    providerName,
-    providerImage,
     price,
-    onChatPress,
-    onReservePress,
-    onPress,
-    style,
-    topServiceCard, isBlurred,
-    serviceId
+    rating,
+    image,
+    seller,
+    category,
+    subcategory,
+    isBlurred = false,
+    saleId
 }) => {
 
+    const handleReserveClick = () => {
+        console.log('🎯 [SaleCardActions] Reserve button clicked for sale:', saleId);
+        // onReserveClick();
+    };
+
+    const handleContactClick = () => {
+        console.log('🎯 [SaleCardActions] Contact button clicked for sale:', saleId);
+        // onContactClick();
+    };
+    // Pour les ventes de démonstration, les boutons sont activés mais déclenchent un message différent
+    const isDemoSale = !saleId;
     return (
-        <Pressable onPress={onPress} style={[style]}>
+        <Pressable>
             <View className="border-gray-400 border-1 rounded-2xl shadow-xl shadow-gray-400 mx-4 mb-6 pb-1 bg-white">
                 {/* Service Image */}
                 <View className="relative">
@@ -52,26 +55,31 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                         style={{ height: screenWidth * 0.5 }}
                         className="rounded-tl-2xl rounded-tr-2xl"
                     />
-                    <View className="absolute h-full w-full bg-black/20 rounded-tl-2xl rounded-tr-2xl p-2 flex-col justify-end">
-                        {/* Tags */}
-                        <View className="flex-row flex-wrap mt-1">
-                            {tags?.slice(0, 2).map((tag, index) => (
+                    {category && subcategory && (
+                        <View className="absolute h-full w-full bg-black/20 rounded-tl-2xl rounded-tr-2xl p-2 flex-col justify-end">
+                            {/* Tags */}
+                            <View className="flex-row flex-wrap mt-1">
                                 <Text
-                                    key={index}
-                                    className="bg-blue-100 text-blue-600 px-2 py-1 text-xs rounded-full mr-2 mb-2 font-medium"
+                                    className="bg-primary text-white px-3 py-2 text-xs font-semibold rounded-full first-line:marker:font-medium"
                                 >
-                                    {tag}
+                                    {category}
                                 </Text>
-                            ))}
-                            {tags?.length && <Text
-                                className="bg-blue-100 text-blue-600 px-2 py-1 text-xs rounded-full mr-2 mb-2 font-medium"
-                            >
-                                more..
-                            </Text>}
+                                <Text
+                                    className="bg-primary text-white px-3 py-2 text-xs font-semibold rounded-full first-line:marker:font-medium"
+                                >
+                                    {subcategory}
+                                </Text>
+                            </View>
                         </View>
-                    </View>
+                    )}
                 </View>
                 <View className="px-4">
+                    <View className="flex flex-row items-center bg-gray-200 px-2 py-1 rounded-full absolute top-4 right-3">
+                        <Ionicons name="star" size={16} color={Colors.primary} />
+                        <Text className="text-sm font-semibold ml-1 text-primary" >
+                            {rating.toFixed(1)}
+                        </Text>
+                    </View>
                     {/* Title */}
                     <H4 className="mt-3">{title}</H4>
 
@@ -81,12 +89,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
                     </P>
 
                     {/* Provider Info */}
-                    {providerName && <View className="flex-row items-center mt-3 gap-2">
+                    {seller && <View className="flex-row items-center mt-3 gap-2">
                         <Image
                             source={require("@assets/images/avatar.png")}
                             className="w-10 h-10 rounded-full"
                         />
-                        <Text className="text-gray-800 text-sm font-semibold">{providerName}</Text>
+                        <Text className="text-gray-800 text-sm font-semibold">{seller}</Text>
                     </View>}
                 </View>
 
@@ -97,13 +105,12 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
 
                     {/* Buttons */}
                     <View className="flex-row items-center gap-x-2">
-                        {/* Chat Button */}
-                        <Button variant='outline' size={`${topServiceCard ? "sm" : "default"}`} onPress={onChatPress} className="border-primary bg-primary/10">
+                        <Button variant='outline' className="border-primary bg-primary/10">
                             <Ionicons name="chatbubbles-outline" size={18} color={Colors.primary} />
                         </Button>
 
                         {/* Reserve Button */}
-                        <Button onPress={onReservePress} size={`${topServiceCard ? "sm" : "default"}`} className="leading-none">
+                        <Button className="leading-none">
                             <Text className="text-white leading-tight">Reserve</Text>
                         </Button>
                     </View>
@@ -113,4 +120,4 @@ const ServiceCard: React.FC<ServiceCardProps> = ({
     );
 };
 
-export default ServiceCard;
+export default SalesCard;

@@ -29,7 +29,7 @@ export function useServices(id: string | null) {
             console.error("Error fetching services:", error);
             throw error;
         }
-        
+
         return data || [];
     };
 
@@ -74,9 +74,15 @@ export function useServices(id: string | null) {
         deleteServiceMutation.mutate(serviceId);
     };
 
+    // Function to manually revalidate the query
+    const revalidateServices = () => {
+        queryClient.invalidateQueries({ queryKey: ["user-services", id] });
+    };
+
     return {
         services,
         loading,
         handleDelete,
+        revalidateServices
     };
 }

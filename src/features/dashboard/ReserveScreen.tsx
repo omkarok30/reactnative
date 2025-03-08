@@ -24,7 +24,7 @@ function ReserveScreen() {
     if (!checkAuthAction()) return;
     console.log("Start Conversation")
   }
-
+console.log(servicesData)
   return (
     <CustomSafeAreaView style={{ flex: 1 }}>
       <StatusBar

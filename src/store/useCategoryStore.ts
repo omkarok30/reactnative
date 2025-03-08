@@ -1,7 +1,4 @@
 import { create } from "zustand";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { createJSONStorage, persist } from "zustand/middleware";
-import { shallow } from "zustand/shallow";
 
 type Category = {
     id: number;
@@ -34,52 +31,45 @@ interface CategoryStore {
     resetCategory: () => void; // New function to reset all categories and subcategories
 }
 
-export const useCategoryStore = create<CategoryStore>()(
-    persist(
-        (set) => ({
+export const useCategoryStore = create<CategoryStore>((set) => ({
+    categories: [],
+    subcategories: [],
+    selectedCategory: null,
+    selectedSubcategory: null,
+    selectedServices: [],
+
+    setCategories: (categories) => set({ categories }),
+    setSubcategories: (subcategories) => set({ subcategories }),
+    setSelectedCategory: (category) =>
+        set({
+            selectedCategory: category,
+            selectedSubcategory: null,
+            selectedServices: [],
+        }),
+    setSelectedSubcategory: (subcategory) =>
+        set({ selectedSubcategory: subcategory, selectedServices: [] }),
+    setSelectedServices: (services) => set({ selectedServices: services }),
+
+    // Reset selected items (Triggered from UI)
+    resetSelections: () => {
+        set({
+            selectedCategory: null,
+            selectedSubcategory: null,
+            selectedServices: [],
+        });
+    },
+
+    // Reset categories & subcategories (Triggered from another store)
+    resetCategory: () => {
+        set({
             categories: [],
             subcategories: [],
             selectedCategory: null,
             selectedSubcategory: null,
             selectedServices: [],
-
-            setCategories: (categories) => set({ categories }),
-            setSubcategories: (subcategories) => set({ subcategories }),
-            setSelectedCategory: (category) =>
-                set({
-                    selectedCategory: category,
-                    selectedSubcategory: null,
-                    selectedServices: [],
-                }),
-            setSelectedSubcategory: (subcategory) =>
-                set({ selectedSubcategory: subcategory, selectedServices: [] }),
-            setSelectedServices: (services) => set({ selectedServices: services }),
-
-            // Reset selected items (Triggered from UI)
-            resetSelections: () => {
-                set({
-                    selectedCategory: null,
-                    selectedSubcategory: null,
-                    selectedServices: [],
-                });
-            },
-
-            // Reset categories & subcategories (Triggered from another store)
-            resetCategory: () => {
-                set({
-                    categories: [],
-                    subcategories: [],
-                    selectedCategory: null,
-                    selectedSubcategory: null,
-                    selectedServices: [],
-                });
-            },
-        }),
-        {
-            name: "category-store",
-            storage: createJSONStorage(() => AsyncStorage),
-        }
-    )
+        });
+    },
+})
 );
 
 export const useSelectedCategory = (selectedCategoryId: number) => {

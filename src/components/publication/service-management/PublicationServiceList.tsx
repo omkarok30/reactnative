@@ -1,5 +1,5 @@
 import { ActivityIndicator, View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { StyleSheet } from 'react-native';
 import { Colors } from '@/utils/Constants';
 import { Route, SceneMap, TabBar, TabView } from 'react-native-tab-view';
@@ -18,7 +18,6 @@ const ServiceList = () => {
     const { sales = [], loading: salesLoading, handleDelete: handleSaleDelete } = useSales(user?.id || "");
 
     const [index, setIndex] = useState(0);
-
     // Define scene rendering function
     const renderScene = ({ route }: { route: { key: string } }) => {
         switch (route.key) {

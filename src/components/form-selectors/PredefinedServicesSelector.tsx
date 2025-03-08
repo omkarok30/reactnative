@@ -12,7 +12,7 @@ interface PredefinedServicesSelectorProps {
     selectedSubcategory: Subcategory | null;
     value: string[];
     onChange: (value: string[]) => void;
-    setValue: UseFormSetValue<ServiceFormData>
+    setValue?: UseFormSetValue<ServiceFormData>
 }
 
 export function PredefinedServicesSelector({
@@ -30,7 +30,7 @@ export function PredefinedServicesSelector({
             ? value.filter(name => name !== selectedServiceName)
             : [...value, selectedServiceName];
 
-        setValue("services", updatedServices, {
+        setValue?.("services", updatedServices, {
             shouldValidate: true,
             shouldDirty: true,
             shouldTouch: true
@@ -42,7 +42,7 @@ export function PredefinedServicesSelector({
 
     const removeService = (serviceName: string) => {
         const updatedServices = value.filter(name => name !== serviceName);
-        setValue("services", updatedServices, {
+        setValue?.("services", updatedServices, {
             shouldValidate: true,
             shouldDirty: true,
             shouldTouch: true

@@ -10,14 +10,6 @@ import { useFormContext } from "react-hook-form";
 import { View } from "react-native";
 
 const MyPublications = () => {
-    const { resetServiceform, resetSalesForm } = useFormStore((state) => ({ resetServiceform: state.resetServiceForm, resetSalesForm: state.resetSalesForm })); // Zustand reset function
-    const { reset } = useFormContext(); // React Hook Form reset function
-    useFocusEffect(
-        useCallback(() => {
-            reset(); // Reset form when the screen is focused
-            resetServiceform(); resetSalesForm()
-        }, [reset, resetServiceform, resetSalesForm])
-    );
 
     return (
         <CustomSafeAreaView style={{ flex: 1 }}>

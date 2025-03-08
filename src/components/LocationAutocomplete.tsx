@@ -23,7 +23,7 @@ export const LocationAutocomplete = forwardRef<GooglePlacesAutocompleteRef, Loca
     const location = useFormStore((state) => state.serviceFormData.service_area);
     const address = useFormStore((state) => state.salesFormData.location);
     const { apiKey, isLoading: isKeyLoading } = useGoogleMapsKey();
-    
+
     const [searchText, setSearchText] = useState(value || location || address);
 
     useEffect(() => {

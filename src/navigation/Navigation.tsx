@@ -14,11 +14,15 @@ import MyPublications from "@/features/Publications/MyPublications";
 import CategoryScreen from "@/features/CategoryScreen";
 import { Colors } from "@/utils/Constants";
 import AuthLayout from "@/features/auth/AuthLayout";
-import { navigationRef } from "@/utils/NavigationUtils";
+import { goBack, navigationRef } from "@/utils/NavigationUtils";
 import SearchFilterScreen from "@/features/SearchFilterScreen";
 import useUnreadMessages from "@/hooks/conversations/useUnreadMessages";
 import { useAuthStore } from "@/store/useAuthStore";
 import AddSales from "@/features/Publications/AddSales";
+import FilterPanels from "@/components/FilterPanels";
+import { Button } from "@/components/ui/button";
+import { Ionicons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native";
 
 const Stack = createStackNavigator();
 
@@ -59,6 +63,36 @@ const Navigation: FC = () => {
                             },
                         }}
                     />
+                    <Stack.Screen
+                        name="Search"
+                        component={SearchFilterScreen}
+                        options={{
+                            headerShown: false,
+                            headerTransparent: true,
+                            gestureEnabled: false,
+                            animation: 'slide_from_right', cardStyle: {
+                                borderTopLeftRadius: 20,
+                                borderTopRightRadius: 20,
+                                overflow: "hidden",
+                            },
+                        }}
+                    />
+                    <Stack.Screen
+                        name="FilterPanel"
+                        component={FilterPanels}
+                        options={{
+                            headerShown: false,
+                            headerTransparent: true,
+                            gestureEnabled: true,
+                            animation: 'slide_from_bottom',
+                            cardStyle: {
+                                marginTop: 50,  // 👈 Creates a gap at the top
+                                borderTopLeftRadius: 20,
+                                borderTopRightRadius: 20,
+                                overflow: "hidden",
+                            },
+                        }}
+                    />
                 </Stack.Group>
                 <Stack.Group screenOptions={{ presentation: 'modal' }}>
                     {/* Auth Screens */}
@@ -71,22 +105,6 @@ const Navigation: FC = () => {
                             headerStyle: { backgroundColor: Colors.primary },
                             headerTintColor: "#fff",
                             headerTitleStyle: { fontSize: 20, fontWeight: "bold" },
-                        }}
-                    />
-                    <Stack.Screen
-                        name="Search"
-                        component={SearchFilterScreen}
-                        options={{
-                            presentation: "transparentModal",
-                            headerShown: false,
-                            cardStyle: {
-                                marginTop: 50,  // 👈 Creates a gap at the top
-                                borderTopLeftRadius: 20,
-                                borderTopRightRadius: 20,
-                                overflow: "hidden",
-                            },
-                            headerTransparent: true,
-                            gestureEnabled: false,
                         }}
                     />
                 </Stack.Group>

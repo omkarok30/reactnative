@@ -10,11 +10,17 @@ import { useRoute } from '@react-navigation/native';
 import useSubmitSales from '@/hooks/api/useSubmitSales';
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { navigate } from '@/utils/NavigationUtils';
+import { useServices } from '@/hooks/publication/useServices';
+import { useAuthStore } from '@/store/useAuthStore';
+import { useSales } from '@/hooks/publication/useSales';
 interface PropType {
   getValues: UseFormGetValues<SaleFormData>;
   reset: UseFormReset<SaleFormData>;
 }
 const SalesStepFive = ({ getValues, reset }: PropType) => {
+  const user = useAuthStore((state) => state.user);
+  const { revalidateServices } = useServices(user?.id || "")
+  const { revalidateSales } = useSales(user?.id || "")
   const route = useRoute();
   const [open, setOpen] = useState(false);
   const { id } = route.params as { id?: string };
@@ -25,6 +31,8 @@ const SalesStepFive = ({ getValues, reset }: PropType) => {
   const handleSubmit = () => {
     const values = getValues();
     submitSale(values);
+    revalidateServices();
+    revalidateSales();
   };
 
   useEffect(() => {
